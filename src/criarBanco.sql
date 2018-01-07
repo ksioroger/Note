@@ -12,7 +12,7 @@ grant all privileges on *.* to note@localhost;
 -- Atualizar as permissões
 flush privileges;
 -- Sair da conta do root
-exit
+exit;
 
 
 -- Criar Banco
