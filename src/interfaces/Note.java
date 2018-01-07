@@ -13,10 +13,13 @@ import java.net.URL;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author Cassiano Rogério
  */
+
+//Janela principal do programa de gestão de senhas
 public class Note extends javax.swing.JFrame {
 
     /**
@@ -30,6 +33,7 @@ public class Note extends javax.swing.JFrame {
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
         initComponents();
+        //Quando for dado um clique duplo na lista de cadastros abre a janela de visualização do cadastro clicado duplamente
         cliqueDuplo();
     }
 
@@ -247,7 +251,7 @@ public class Note extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    //Permite abrir a tela de visualização com click duplo
+    //Permite abrir a tela de visualização com click duplo no item
     private void cliqueDuplo(){
         jListSenhasCadastradas.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -257,22 +261,29 @@ public class Note extends javax.swing.JFrame {
             }          
         });
     }
+    
+    //Atualiza a interface com a lista de cadastros
     public void RefazerJList(){
+        //Limpa o Jlist que lista os cadastro
         jListSenhasCadastradas.clearSelection();
+        //Atualiza o vector com as lista de cadastros
         senhas_cadastradas = Senha.getVisões();
+        //Recria o Jlist que lista os cadastros de senhas com o vector atualizado
         jListSenhasCadastradas.setModel(new DefaultComboBoxModel(senhas_cadastradas));
     }
     
+    //Cria a janela de novo cadastro de senha
     private void novo(){
         //Criar uma nova janela, para adicionar dados
         Novo novodialogo = new Novo(this,true);
         novodialogo.setLocationRelativeTo(null);
         novodialogo.setResizable(false);
         novodialogo.setVisible(true);
-        //Atualizar a Lista de senhas cadastradas
+        //Recria a Lista de senhas cadastradas na tela
         RefazerJList();
     }
     
+    //Cria a janela de visualização de cadastro
     private void visualizar(){
         //Capturar o item selecionado
         int item = jListSenhasCadastradas.getSelectedIndex();
@@ -289,6 +300,7 @@ public class Note extends javax.swing.JFrame {
         }
     }
     
+    //Cria a janela de atualização de cadastro
     private void atualizar(){
         //Capturar o item selecionado
         int item = jListSenhasCadastradas.getSelectedIndex();
@@ -302,12 +314,14 @@ public class Note extends javax.swing.JFrame {
             atualizardialogo.setLocationRelativeTo(null);
             atualizardialogo.setResizable(false);
             atualizardialogo.setVisible(true);
-            //Atualizar a Lista de senhas cadastradas
+            //Recria a Lista de senhas cadastradas na tela
             RefazerJList();
         }
     }
     
+    //Cria a janela de exclusão do cadastro selecionado
     private void excluir(){
+        //Capta qual foi o intem selecionado 
         int item = jListSenhasCadastradas.getSelectedIndex();
         if(jListSenhasCadastradas.getSelectedIndex()<0){
             JOptionPane.showMessageDialog(this, "Por gentileza selecione uma senha para excluir", "ERRO",
@@ -318,18 +332,20 @@ public class Note extends javax.swing.JFrame {
             excluirdialogo.setLocationRelativeTo(null);
             excluirdialogo.setResizable(false);
             excluirdialogo.setVisible(true);
-            //Visualizar a Lista de senhas cadastradas
+            //Recria a Lista de senhas cadastradas na tela
             RefazerJList();
         }
     }
     
     private void jMenuItemVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVisualizarActionPerformed
         // TODO add your handling code here:
+        //Solicita a criação da janela de visualização do cadastro selecionado
         visualizar();
     }//GEN-LAST:event_jMenuItemVisualizarActionPerformed
 
     private void jMenuItemAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAtualizarActionPerformed
         // TODO add your handling code here:
+        //Solicita a criação da janela de atualização do cadastro selecionado
         atualizar();
     }//GEN-LAST:event_jMenuItemAtualizarActionPerformed
 
@@ -339,59 +355,69 @@ public class Note extends javax.swing.JFrame {
     
     private void jButtonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovoActionPerformed
         // TODO add your handling code here:
+        //Solicita a criação da janela de criação de novo cadastro de senha
         novo();
     }//GEN-LAST:event_jButtonNovoActionPerformed
 
     private void jButtonSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSairActionPerformed
         // TODO add your handling code here:
+        //Encerra o programa
         System.exit(0);
     }//GEN-LAST:event_jButtonSairActionPerformed
 
     private void jMenuItemSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSairActionPerformed
         // TODO add your handling code here:
+        //Encerra o programa
         System.exit(0);
     }//GEN-LAST:event_jMenuItemSairActionPerformed
 
     private void jButtonVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVisualizarActionPerformed
         // TODO add your handling code here:
+        //Solicita a criação da janela de visualização do cadastro selecionado
         visualizar();
     }//GEN-LAST:event_jButtonVisualizarActionPerformed
 
     private void jButtonAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtualizarActionPerformed
         // TODO add your handling code here:
+        //Solicita a criação da janela de atualização do cadastro selecionado
         atualizar();
     }//GEN-LAST:event_jButtonAtualizarActionPerformed
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
+        //Solicita a criação da janela de exclusão do cadastro selecionado
         excluir();
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void jMenuItemNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNovoActionPerformed
         // TODO add your handling code here:
-       novo();
+        //Solicita a criação da janela de criação de novo cadastro de senha
+        novo();
     }//GEN-LAST:event_jMenuItemNovoActionPerformed
 
     private void jMenuItemExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExcluirActionPerformed
         // TODO add your handling code here:
+        //Solicita a criação da janela de exclusão do cadastro selecionado
         excluir();
     }//GEN-LAST:event_jMenuItemExcluirActionPerformed
 
     private void jMenuItemAtalhosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAtalhosActionPerformed
         // TODO add your handling code here:
+        //Chama a janela que lista os atalhos do programa
         new controladorAtalhos ();
     }//GEN-LAST:event_jMenuItemAtalhosActionPerformed
 
     private void jMenuItemSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSobreActionPerformed
         // TODO add your handling code here:
+        //Cria a janela sobre do programa
         new controladorSobre ();
     }//GEN-LAST:event_jMenuItemSobreActionPerformed
 
+    //Botão para atualizar a interface do programa
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // TODO add your handling code here:
+        //Refaz a lista de cadastro na tela principal
         RefazerJList();
-        //JDialog dialog = new JDialog();
-        //dialog.setVisible(true);
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     /**

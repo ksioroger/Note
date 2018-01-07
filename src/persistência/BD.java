@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 /**
  *
  * @author Cassiano Rogério
  */
+
 public class BD {
     //static final String URL_BD = "jdbc:mysql://localhost:3306/note?zeroDateTimeBehavior=convertToNull";
     static final String URL_BD = "jdbc:mysql://localhost:3306/note?autoReconnect=true&useSSL=false";

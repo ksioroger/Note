@@ -19,8 +19,10 @@ import javax.swing.KeyStroke;
 
 /**
  *
- * @author cassi
+ * @author Cassiano Rogério
  */
+
+//Cria uma janela para inserção de nova senha no banco de dados
 public class Novo extends javax.swing.JDialog {
     /** Creates new form Adicionar */
     public Novo(java.awt.Frame parent, boolean modal) {
@@ -29,6 +31,7 @@ public class Novo extends javax.swing.JDialog {
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
         initComponents();
+        //Setar o botão Okay como botão padrão da janela
         getRootPane().setDefaultButton(jButtonOkay);
     }
     /** This method is called from within the constructor to
@@ -218,11 +221,13 @@ public class Novo extends javax.swing.JDialog {
 
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
         // TODO add your handling code here:
+        //Fecha a janela
         this.dispose();
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void jButtonOkayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkayActionPerformed
         // TODO add your handling code here:
+        //Verifica se uma ou mais senha e chama a janela de inserção de dados
         botãoOkayPressionado();
     }//GEN-LAST:event_jButtonOkayActionPerformed
 
@@ -236,6 +241,7 @@ public class Novo extends javax.swing.JDialog {
 
     private void jTextFieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSenhaActionPerformed
         // TODO add your handling code here:
+        //Quando estiver no campo de texto da senha permite confirmar usando a tecla enter
         jTextFieldSenha.addKeyListener(new KeyAdapter(){
             public void keyPressed(KeyEvent ke){
                 if(ke.getKeyCode() == KeyEvent.VK_ENTER){
@@ -263,29 +269,37 @@ public class Novo extends javax.swing.JDialog {
         return rootPane;
     }    
     
+    //Checa se foi selecionada a opção para inserir mais de um cadastro de senha, e chama a janela de cadastro
     private void botãoOkayPressionado(){
         if(!jCheckBoxMúltiplasSenhas.isSelected()){
             inserirSenha();
             this.dispose();
         }else{
+            // Seta o foco no primeiro campo de texto(nome)
             jTextFieldNome.requestFocus();
             inserirSenha();
         }
     }
     
+    //Capta os dados da tela de cadastro e insere no banco de dados
     private void inserirSenha() {
-        Senha senha = obterSenhaInformada();
         String mensagem_erro = null;
+        //recebe os dados digitados pelo usuário na tela de cadastro
+        Senha senha = obterSenhaInformada();
+        
+        //Insere a senha no banco de dados
         if (senha != null){
             mensagem_erro = Senha.inserirSenha(senha);
+            //Para caso o usuário for continuar cadastrando ele irá limpar os campos após a confirmação de inserção de cada cadastro
             Limpar();
         }
         else{
             JOptionPane.showMessageDialog(this, "Por gentileza preencher todos os campos", "ERRO",
             JOptionPane.ERROR_MESSAGE);
-        }
+        } 
     }
     
+    //Capta os dados digitados na tela de cadastro
     private Senha obterSenhaInformada(){
         entidade.Senha senha = null;
         
@@ -295,10 +309,11 @@ public class Novo extends javax.swing.JDialog {
         if (Usuário.isEmpty()) return null;
         String Senha = jTextFieldSenha.getText();
         if (Senha.isEmpty()) return null;
-        
+        //Retorna os dados informados pello usuário
         return new Senha (Nome,Usuário, Senha);
     }
     
+    //Limpa os campos de texto da janela de cadastro
     private void Limpar(){
         jTextFieldNome.setText("");
         jTextFieldUsuário.setText("");

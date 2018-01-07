@@ -9,8 +9,9 @@ import java.util.Vector;
 
 /**
  *
- * @author cassi
+ * @author Cassiano Rogério
  */
+
 public class Senha {
     
     private int id;
@@ -63,6 +64,7 @@ public class Senha {
         this.senha = senha;
     }
     
+    //Executa a instrução sql responsável por realizar a alteração do cadastro no banco de dados
     public static String alterarSenha (Senha senha) {
         BD.criaConexãoComando();
         String sql = "UPDATE senhas SET nome = ?, usuario = ?, senha = ?"
@@ -74,7 +76,6 @@ public class Senha {
             comando.setString(2, senha.getusuário());
             comando.setString(3, senha.getsenha());
             comando.setString(4, Integer.toString(senha.getID()));
-            System.out.println(comando.toString());
             comando.executeUpdate();
             comando.close();
             BD.fechaComandoConexão();
@@ -86,6 +87,7 @@ public class Senha {
         }
     }
 
+    //Executa a instrução sql responsável por realizar a inserção do cadastro no banco de dados
     public static String inserirSenha (Senha senha) {
         BD.criaConexãoComando();
         String sql = "INSERT INTO senhas (nome, usuario, senha)"
@@ -106,6 +108,7 @@ public class Senha {
         }
     }
     
+    //Cria um vector com os dados de cadastro de senhas cadastradas
     public static Vector<Visão<String>> getVisões () {
         BD.criaConexãoComando();
         // Listar todas as senhas
@@ -133,6 +136,7 @@ public class Senha {
         return visões;
     }
     
+    //Cria a visão de um dos cadastros, contendo nome, usuário e senha
     public Visão<String> getVisão () {
         //return new Visão<String> (nome + " - " + usuário);
         return new Visão<String> (nome, 
@@ -141,6 +145,7 @@ public class Senha {
                         + " | Senha: ********");
     }
     
+    //Busca dados de um cadastro de senha no banco e retorna suas informações incluindo sua chave primária
     public static Senha buscarSenhaEPK (String nome) {
         String sql = "SELECT id, nome, usuario, senha FROM senhas WHERE nome = ?";
         ResultSet lista_resultados = null;
@@ -166,6 +171,7 @@ public class Senha {
     return senha;
     }
     
+    //Remove o cadastro informado através de sua chave primária(id) do banco de dados
     public static String removerSenha (int id) {
         String sql = "DELETE FROM senhas WHERE id = ?";
         try {
@@ -180,6 +186,7 @@ public class Senha {
         }
     }
     
+    //Busca dados de um cadastro de senha no banco e retorna suas informações exceto sua chave primária
     public static Senha buscarSenha (String nome) {
         String sql = "SELECT nome, usuario, senha FROM senhas WHERE nome = ?";
         ResultSet lista_resultados = null;

@@ -20,21 +20,26 @@ import javax.swing.KeyStroke;
 
 /**
  *
- * @author cassi
+ * @author Cassiano Rogério
  */
-public class Atualizar extends javax.swing.JDialog {
 
+//Janela responsável por permitir a atualização de dados no banco de dados
+
+public class Atualizar extends javax.swing.JDialog {
     private int elemento;
     Vector<Visão<String>> senhas_cadastradas;
     /** Creates new form Adicionar */
     public Atualizar(java.awt.Frame parent, boolean modal, int item) {
         super(parent, modal);
+        //Recebe qual foi o cadastro selecionado
         this.elemento = item;
+        //Capta os dados dos cadastros de senhas armazenados no banco
         senhas_cadastradas = Senha.getVisões();
         URL url = this.getClass().getResource("/images/key20x20.png");
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
         initComponents();
+        //Exibe na tela as informações do cadastro de senha que foi selecionado
         visualizarSenha();
     }
     /** This method is called from within the constructor to
@@ -206,17 +211,20 @@ public class Atualizar extends javax.swing.JDialog {
 
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
         // TODO add your handling code here:
+        //fecha a janela
         this.dispose();
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void jButtonAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtualizarActionPerformed
         // TODO add your handling code here:
+        //Executa a atualização dos dados e fecha a janela
         atualizarSenha();
         this.dispose();
     }//GEN-LAST:event_jButtonAtualizarActionPerformed
 
     private void jTextFieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSenhaActionPerformed
         // TODO add your handling code here:
+        //Quando estiver no campo de texto da senha permite confirmar usando a tecla enter
         jTextFieldSenha.addKeyListener(new KeyAdapter(){
             public void keyPressed(KeyEvent ke){
                 if(ke.getKeyCode() == KeyEvent.VK_ENTER){
@@ -244,6 +252,7 @@ public class Atualizar extends javax.swing.JDialog {
         return rootPane;
     }
     
+    //Exibe na janela os dados do cadastro da senha selecionada
     private void visualizarSenha(){
         String nome = null;
         Senha senha = null;
@@ -262,6 +271,7 @@ public class Atualizar extends javax.swing.JDialog {
         jTextFieldSenha.setText(senha.getsenha());
     }
     
+    //Capta a senha e realiza a atualização no banco
     private void atualizarSenha() {
         String nome = null;
         Senha senha = null;
@@ -280,12 +290,14 @@ public class Atualizar extends javax.swing.JDialog {
         novaSenha = obterSenhaInformada();
         novaSenha.setID(senha.getID());
         
+        //Se todos os dados foram digitados irá realizar a a atualização no banco
         if (novaSenha != null){
             mensagem_erro = Senha.alterarSenha(novaSenha);
         }
         else JOptionPane.showMessageDialog(this, "Por gentileza preencher todos os campos", "ERRO",
             JOptionPane.ERROR_MESSAGE);
         
+        //Chega se a atualização foi concluida sem erros e informa ao usuário
         if (mensagem_erro == null){           
             if(senha.getNome().equals(novaSenha.getNome())){
                 mensagem_erro = "Senha " + senha.getNome() + " foi atualizada!"; 
@@ -301,6 +313,7 @@ public class Atualizar extends javax.swing.JDialog {
         } 
     }
     
+    //Capta os dados digitados pelo usuário
     private Senha obterSenhaInformada(){
         entidade.Senha senha = null;
         

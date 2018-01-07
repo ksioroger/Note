@@ -13,8 +13,10 @@ import javax.swing.KeyStroke;
 
 /**
  *
- * @author cassi
+ * @author Cassiano Rogério
  */
+
+//Janelas responsável por listar os atalhos do programa
 public class Atalhos extends javax.swing.JFrame {
 
     /**

@@ -19,8 +19,10 @@ import javax.swing.KeyStroke;
 
 /**
  *
- * @author cassi
+ * @author Cassiano Rogério
  */
+
+//Janela para remoção de senha do banco de dados
 public class Excluir extends javax.swing.JDialog {
 
     private int elemento;
@@ -28,13 +30,17 @@ public class Excluir extends javax.swing.JDialog {
     /** Creates new form Adicionar */
     public Excluir(java.awt.Frame parent, boolean modal, int item) {
         super(parent, modal);
+        //Recebe qual foi o cadastro selecionado
         this.elemento = item;
+        //Capta os dados dos cadastros de senhas armazenados no banco
         senhas_cadastradas = Senha.getVisões();
         URL url = this.getClass().getResource("/images/key20x20.png");
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
         initComponents();
+        //Setar o botão Okay como botão padrão da janela
         getRootPane().setDefaultButton(jButtonOkay);
+        //Janela de solicitação de exclusão do cadastro de senha selecionado
         buscarSenha();
     }
     /** This method is called from within the constructor to
@@ -143,6 +149,7 @@ public class Excluir extends javax.swing.JDialog {
 
     private void jButtonOkayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkayActionPerformed
         // TODO add your handling code here:
+        //Permite confirmar a exclusão usando a tecla enter
         jButtonOkay.addKeyListener(new KeyAdapter(){
             public void keyPressed(KeyEvent ke){
                 if(ke.getKeyCode() == KeyEvent.VK_ENTER){
@@ -156,6 +163,7 @@ public class Excluir extends javax.swing.JDialog {
 
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
         // TODO add your handling code here:
+        //Fecha a janela
         this.dispose();
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
@@ -177,6 +185,7 @@ public class Excluir extends javax.swing.JDialog {
         return rootPane;
     }
     
+    //Checa o cadastro da senha que foi solicitado para remoção e realiza a remoção do banco
     private void removerSenha(){
         int id= -1;
         String nome = null;
@@ -191,13 +200,15 @@ public class Excluir extends javax.swing.JDialog {
         //Capta os dados da senha e sua chave primária (ID)
         senha = Senha.buscarSenhaEPK(nome);
         
-        //removerSenha (int id) {
+        //Remove o cadastro da senha selecionada do banco
         if (senha != null) {
             mensagem_erro = Senha.removerSenha(senha.getID());
         }
         else {
             mensagem_erro = "Senha não cadastrada!";
 	}
+        
+        //Checa se a remoção ocorreu corretamente e informa ao usuário
         if (mensagem_erro == null){
             mensagem_erro = "Senha " + senha.getNome() + " foi removida!";
             JOptionPane.showMessageDialog(this, mensagem_erro);
@@ -221,7 +232,7 @@ public class Excluir extends javax.swing.JDialog {
         nome = visãoSelecionada.getChave();
         //Capta os dados da senha e sua chave primária (ID)
         senha = Senha.buscarSenhaEPK(nome);
-        //Imprimir na etiqueta o noome da senha que esta sendo solicitada para ser excluid
+        //Imprimir na etiqueta o nome da senha que esta sendo solicitada para ser excluid
         jLabelInformaçãoDeRemoção.setText(senha.getNome());
     }
     

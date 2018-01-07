@@ -1,11 +1,12 @@
 package controle;
 
 import interfaces.Atalhos;
-
 /**
  *
- * @author cassi
+ * @author Cassiano Rogério
  */
+
+//Constroi uma nova janela onde conta os atalhos do programa
 public class controladorAtalhos {
     public controladorAtalhos() {
         Atalhos janelaAtalhos =  new Atalhos();

@@ -3,11 +3,12 @@ package controle;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
-
 /**
  *
- * @author cassi
+ * @author Cassiano Rogério
  */
+
+//Permite controlar o tamanho do campo que o um TextField pode receber
 public class ControleTamanhoTexto extends PlainDocument{
     private int tamanhoMax = 10;
          

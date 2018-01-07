@@ -21,8 +21,10 @@ import persistência.BD;
 
 /**
  *
- * @author cassi
+ * @author Cassiano Rogério
  */
+
+//Permite visualizar os dados do cadastro selecionado
 public class Visualizar extends javax.swing.JDialog {
 
     private int elemento;
@@ -30,13 +32,17 @@ public class Visualizar extends javax.swing.JDialog {
     /** Creates new form Adicionar */
     public Visualizar(java.awt.Frame parent, boolean modal, int item) {
         super(parent, modal);
+        //Recebe qual foi o cadastro selecionado
         this.elemento = item;
+        //Capta os dados dos cadastros de senhas armazenados no banco
         senhas_cadastradas = Senha.getVisões();
         URL url = this.getClass().getResource("/images/key20x20.png");
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
         initComponents();
+        //Imprimir na janela o cadastro da senha selecionado
         buscarSenhaEImprimir();
+        //Setar o botão Okay como botão padrão da janela
         getRootPane().setDefaultButton(jButtonOkay);
     }
     /** This method is called from within the constructor to
@@ -218,11 +224,13 @@ public class Visualizar extends javax.swing.JDialog {
 
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
         // TODO add your handling code here:
+        //Fecha a janela
         this.dispose();
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void jButtonOkayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkayActionPerformed
         // TODO add your handling code here:
+        //Fecha a janela
         this.dispose();
     }//GEN-LAST:event_jButtonOkayActionPerformed
 
@@ -236,6 +244,7 @@ public class Visualizar extends javax.swing.JDialog {
 
     private void jTextFieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSenhaActionPerformed
         // TODO add your handling code here:
+        //Permite confirmar a exclusão usando a tecla enter
         jTextFieldSenha.addKeyListener(new KeyAdapter(){
             public void keyPressed(KeyEvent ke){
                 if(ke.getKeyCode() == KeyEvent.VK_ENTER){
@@ -263,6 +272,7 @@ public class Visualizar extends javax.swing.JDialog {
         return rootPane;
     }
     
+    //Verifica qual foi o cadastro seleciona e imprime na janela
     private void buscarSenhaEImprimir(){
         String nome = null;
         Senha senha = null;
@@ -279,36 +289,6 @@ public class Visualizar extends javax.swing.JDialog {
         jTextFieldUsuário.setText(senha.getusuário());
         jTextFieldSenha.setText(senha.getsenha());
     }
-    
-    private void inserirSenha() {
-        Senha senha = obterSenhaInformada();
-        String mensagem_erro = null;
-        if (senha != null){
-            mensagem_erro = Senha.inserirSenha(senha);
-            Limpar();
-        }
-        else JOptionPane.showMessageDialog(this, "Por gentileza preencher todos os campos", "ERRO",
-            JOptionPane.ERROR_MESSAGE);
-    }
-    
-    private Senha obterSenhaInformada(){
-        entidade.Senha senha = null;
-        
-        String Nome =  jTextFieldNome.getText();
-        if (Nome.isEmpty()) return null;
-        String Usuário = jTextFieldUsuário.getText();
-        if (Usuário.isEmpty()) return null;
-        String Senha = jTextFieldSenha.getText();
-        if (Senha.isEmpty()) return null;
-        
-        return new Senha (Nome,Usuário, Senha);
-    }
-    
-    private void Limpar(){
-        jTextFieldNome.setText("");
-        jTextFieldUsuário.setText("");
-        jTextFieldSenha.setText("");
-    }    
     
     /**
      * @param args the command line arguments

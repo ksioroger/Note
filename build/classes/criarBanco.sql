@@ -1,3 +1,8 @@
+--
+-- @author Cassiano Rogério
+-- Gerenciador de senhas em JAVA com Mysql
+--
+
 -- Logar como root
 mysql -u root -p
 -- Cria o usúario para conexão com o BD

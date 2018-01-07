@@ -1,5 +1,11 @@
 package entidade;
 
+/**
+ *
+ * @author Cassiano Rogério
+ */
+
+//Tipo que receberá os dados contidos no banco para serem exibidos ou manipulados 
 public class Visão<T> {
     T chave;
     String info;
@@ -7,10 +13,6 @@ public class Visão<T> {
     public Visão(T chave, String info) {
         this.chave = chave;
         this.info = info;
-    }
-
-    Visão(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public T getChave() {

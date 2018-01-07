@@ -26,8 +26,8 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanelAtalhos" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="jPanelAtalhos" min="-2" pref="347" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -48,14 +48,16 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jButtonOkay" min="-2" max="-2" attributes="0"/>
-                          <Component id="jScrollPaneAtalhos" min="-2" pref="290" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="jLabelTítulo" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="jLabelTítulo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="jScrollPaneAtalhos" alignment="1" min="-2" pref="341" max="-2" attributes="0"/>
+                      <Component id="jButtonOkay" alignment="1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -64,10 +66,9 @@
               <Group type="102" alignment="0" attributes="0">
                   <Component id="jLabelTítulo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPaneAtalhos" min="-2" max="-2" attributes="0"/>
+                  <Component id="jScrollPaneAtalhos" pref="126" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButtonOkay" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -90,7 +91,7 @@
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="Desenvolvido por Cassiano Rog&#xe9;rio.&#xa;Contato: cassiano.roger@gmail.com&#xa;Dourados - MS&#xa;&#xa;Vers&#xe3;o 1.0"/>
+                <Property name="text" type="java.lang.String" value="Desenvolvido por Cassiano Rog&#xe9;rio.&#xa;Contato: cassiano.roger@gmail.com&#xa;Dourados - MS&#xa;&#xa;Site do projeto: github.com/ksioroger/Note&#xa;Vers&#xe3;o 1.0"/>
               </Properties>
             </Component>
           </SubComponents>

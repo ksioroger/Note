@@ -13,8 +13,10 @@ import javax.swing.KeyStroke;
 
 /**
  *
- * @author cassi
+ * @author Cassiano Rogério
  */
+
+//Janela responsável por listar informaões sobre o programa
 public class Sobre extends javax.swing.JFrame {
 
     /**
@@ -51,7 +53,7 @@ public class Sobre extends javax.swing.JFrame {
         jTextAreaAtalhos.setEditable(false);
         jTextAreaAtalhos.setColumns(20);
         jTextAreaAtalhos.setRows(5);
-        jTextAreaAtalhos.setText("Desenvolvido por Cassiano Rogério.\nContato: cassiano.roger@gmail.com\nDourados - MS\n\nVersão 1.0");
+        jTextAreaAtalhos.setText("Desenvolvido por Cassiano Rogério.\nContato: cassiano.roger@gmail.com\nDourados - MS\n\nSite do projeto: github.com/ksioroger/Note\nVersão 1.0");
         jScrollPaneAtalhos.setViewportView(jTextAreaAtalhos);
 
         jButtonOkay.setMnemonic('k');
@@ -67,22 +69,23 @@ public class Sobre extends javax.swing.JFrame {
         jPanelAtalhosLayout.setHorizontalGroup(
             jPanelAtalhosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAtalhosLayout.createSequentialGroup()
-                .addGroup(jPanelAtalhosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelAtalhosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jButtonOkay)
-                        .addComponent(jScrollPaneAtalhos, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabelTítulo))
+                .addComponent(jLabelTítulo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAtalhosLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanelAtalhosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPaneAtalhos, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonOkay))
+                .addGap(33, 33, 33))
         );
         jPanelAtalhosLayout.setVerticalGroup(
             jPanelAtalhosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAtalhosLayout.createSequentialGroup()
                 .addComponent(jLabelTítulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneAtalhos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPaneAtalhos, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonOkay)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jButtonOkay))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -90,8 +93,8 @@ public class Sobre extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanelAtalhos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanelAtalhos, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
