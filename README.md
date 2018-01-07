@@ -12,4 +12,4 @@ O sistema é totalmente gerenciável, é possível incluir, visualizar, alterar 
 
 ### Execução:
 
-Para realizar a execução acesse, a [WIKI](https://github.com/ksioroger/Note/wiki/Introdução) para mais informações.
+Para realizar a execução acesse, a [WIKI](https://github.com/ksioroger/Note/wiki) para mais informações.
