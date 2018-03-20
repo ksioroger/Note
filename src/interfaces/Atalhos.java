@@ -23,7 +23,7 @@ public class Atalhos extends javax.swing.JFrame {
      * Creates new form Atalhos
      */
     public Atalhos() {
-        URL url = this.getClass().getResource("/images/key20x20.png");
+        URL url = this.getClass().getResource("/images/key 20x20.png");
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
         initComponents();

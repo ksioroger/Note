@@ -34,7 +34,7 @@ public class Excluir extends javax.swing.JDialog {
         this.elemento = item;
         //Capta os dados dos cadastros de senhas armazenados no banco
         senhas_cadastradas = Senha.getVisões();
-        URL url = this.getClass().getResource("/images/key20x20.png");
+        URL url = this.getClass().getResource("/images/key 20x20.png");
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
         initComponents();

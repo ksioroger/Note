@@ -1,8 +1,7 @@
-package interfaces;
+ package interfaces;
 
 import controle.ControleTamanhoTexto;
 import entidade.Senha;
-import java.awt.Event;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
@@ -10,6 +9,8 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.InputMap;
@@ -24,10 +25,12 @@ import javax.swing.KeyStroke;
 
 //Cria uma janela para inserção de nova senha no banco de dados
 public class Novo extends javax.swing.JDialog {
-    /** Creates new form Adicionar */
+    /** Creates new form Adicionar
+     * @param parent
+     * @param modal */
     public Novo(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        URL url = this.getClass().getResource("/images/key20x20.png");
+        URL url = this.getClass().getResource("/images/key 20x20.png");
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
         initComponents();
@@ -226,9 +229,13 @@ public class Novo extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void jButtonOkayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkayActionPerformed
-        // TODO add your handling code here:
-        //Verifica se uma ou mais senha e chama a janela de inserção de dados
-        botãoOkayPressionado();
+        try {
+            // TODO add your handling code here:
+            //Verifica se uma ou mais senha e chama a janela de inserção de dados
+            botãoOkayPressionado();
+        } catch (Exception ex) {
+            Logger.getLogger(Novo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonOkayActionPerformed
 
     private void jCheckBoxMúltiplasSenhasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMúltiplasSenhasActionPerformed
@@ -270,7 +277,7 @@ public class Novo extends javax.swing.JDialog {
     }    
     
     //Checa se foi selecionada a opção para inserir mais de um cadastro de senha, e chama a janela de cadastro
-    private void botãoOkayPressionado(){
+    private void botãoOkayPressionado() throws Exception{
         if(!jCheckBoxMúltiplasSenhas.isSelected()){
             inserirSenha();
             this.dispose();
@@ -282,7 +289,7 @@ public class Novo extends javax.swing.JDialog {
     }
     
     //Capta os dados da tela de cadastro e insere no banco de dados
-    private void inserirSenha() {
+    private void inserirSenha() throws Exception {
         String mensagem_erro = null;
         //recebe os dados digitados pelo usuário na tela de cadastro
         Senha senha = obterSenhaInformada();
@@ -295,13 +302,25 @@ public class Novo extends javax.swing.JDialog {
         }
         else{
             JOptionPane.showMessageDialog(this, "Por gentileza preencher todos os campos", "ERRO",
-            JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.WARNING_MESSAGE);
+                    //JOptionPane.ERROR_MESSAGE);
+            int flag = 0;
+            flag = JOptionPane.showConfirmDialog(this,"Você deve informar todos os campos",
+                    "Campos não informados",JOptionPane.YES_NO_OPTION);
+            if(flag==JOptionPane.YES_OPTION){
+                System.out.println("opção sim foi marcada");
+            }
+            else{
+                System.out.println("opção não foi marcada");
+            }
+            
         } 
-    }
+    } 
     
     //Capta os dados digitados na tela de cadastro
-    private Senha obterSenhaInformada(){
+    private Senha obterSenhaInformada() throws Exception{
         entidade.Senha senha = null;
+        String chaveencriptacao = "F5SENHAACESSO-TI";
         
         String Nome =  jTextFieldNome.getText();
         if (Nome.isEmpty()) return null;
@@ -309,8 +328,59 @@ public class Novo extends javax.swing.JDialog {
         if (Usuário.isEmpty()) return null;
         String Senha = jTextFieldSenha.getText();
         if (Senha.isEmpty()) return null;
-        //Retorna os dados informados pello usuário
+        
+        int forca = testaForcaDaSenha(Senha);
+        if(forca <= 10){
+            JOptionPane.showMessageDialog(this,
+                    "Sua senha não possui os pré-requisitos de uma senha segura,"
+                            + "\n recomendamos que mude o assim que possível. Força: " 
+                            + forca, "MENSAGEM", JOptionPane.WARNING_MESSAGE);
+        }
+        else if(forca <= 25){
+            JOptionPane.showMessageDialog(this, 
+                    "Sua senha ainda não é tão boa,\n recomendamos que altere asim que possível", 
+                    "REGULAR", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Sua senha é FORTE", 
+                    "FORTE", JOptionPane.WARNING_MESSAGE);
+        }        
+        
+        ////////////////////////////////////////////////////
+        //      Criptografando senha usando AES           //
+        ////////////////////////////////////////////////////
+        System.out.println("Senha: " + Senha);
+        Senha = entidade.Senha.criptografe_e_codifique(Senha, chaveencriptacao);
+        System.out.println("Senha encriptata e codificada: " + Senha);
+        //descriptografia com decodigicação de sennha 
+        //Senha = entidade.Senha.descriptografe_e_decodifique(Senha, chaveencriptacao);
+        //System.out.println("Senha decoficada e decriptada: " + Senha);
+        
+        //Retorna os dados informados pelo usuário
         return new Senha (Nome,Usuário, Senha);
+    }
+    
+    //Testa forca da senha
+    public int testaForcaDaSenha(String senha) {
+        int forca = 0;
+        //System.out.println(senha);
+        
+        if(senha.matches("[a-z]+") || senha.matches("[0-9]+") || senha.matches("[A-Z]+") || senha.matches("W+")){
+            forca += 10;
+            
+            //System.out.println(forca);
+        }
+        
+        else if(senha.matches("[a-z0-9]+") || senha.matches("[A-Z0-9]+") || senha.matches("[a-zA-Z]") ) {
+            forca += 15;
+        }
+        
+        else {
+            forca += 30;
+        }
+         
+        //System.out.println(forca);
+        return forca;
     }
     
     //Limpa os campos de texto da janela de cadastro

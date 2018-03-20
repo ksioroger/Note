@@ -7,6 +7,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
 /**
  *
  * @author Cassiano Rogério
@@ -18,6 +31,7 @@ public class Senha {
     private String nome;
     private String usuário;
     private String senha;
+    static String IV = "F5SENHAACESSO-TI";
     
     public Senha(String nome, String usuário, String senha) {
         this.nome = nome;
@@ -85,6 +99,36 @@ public class Senha {
             BD.fechaComandoConexão();
             return "Erro na atualização da entrada no BD"; 
         }
+    }
+    
+    public void descriptografa(String senha) {
+              
+             try {      
+                  KeyGenerator keygenerator = KeyGenerator.getInstance("ACESSO");
+                   SecretKey chaveDES = keygenerator.generateKey();
+                   
+                   Cipher cifraDES;
+   
+                   // Cria a cifra 
+                   cifraDES = Cipher.getInstance("DES/ECB/PKCS5Padding");
+   
+                   // Inicializa a cifra para o processo de encriptação
+                   cifraDES.init(Cipher.ENCRYPT_MODE, chaveDES);
+   
+                   System.out.println("Texto Encriptado : " + senha);
+   
+                   // Inicializa a cifra também para o processo de decriptação
+                   cifraDES.init(Cipher.DECRYPT_MODE, chaveDES);
+   
+                   // Decriptografa o texto
+                   byte[] textoDecriptografado = cifraDES.doFinal(senha.getBytes());
+                   
+   
+                   System.out.println("Texto Decriptografado : " + new String(textoDecriptografado));
+             } catch(Exception e) {
+                 e.printStackTrace();
+             }          
+                   
     }
 
     //Executa a instrução sql responsável por realizar a inserção do cadastro no banco de dados
@@ -207,6 +251,53 @@ public class Senha {
                 senha = null;
                 }
     return senha;
+    }
+    
+    //Criptografa a senha útilizando o algoritmo AES, retornando a senha cifrada em um byte[]
+    public static byte[] encrypt(String textopuro, String chaveencriptacao) throws Exception {
+        Cipher encripta = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
+        SecretKeySpec key = new SecretKeySpec(chaveencriptacao.getBytes("UTF-8"), "AES");
+        encripta.init(Cipher.ENCRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
+        return encripta.doFinal(textopuro.getBytes("UTF-8"));
+    }
+    
+    //Descriptograda a senha, utilizando o algoritmo AEs, retorna a senha descriptografada em uma String
+    public static String decrypt(byte[] textoencriptado, String chaveencriptacao) throws Exception{
+        Cipher decripta=  Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
+        SecretKeySpec key = new SecretKeySpec(chaveencriptacao.getBytes("UTF-8"), "AES");
+        decripta.init(Cipher.DECRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
+        return new String(decripta.doFinal(textoencriptado),"UTF-8");
+    }
+    
+    //Realiza a chamada ao processo que criptografa a senha em um byte[], ao receber esse byte[] codifica-o em uma string
+    public static String criptografe_e_codifique(String Senha, String Chaveencripatação){
+        String senhaencriptadabase64string = null;
+        try {
+            //Criptografando
+            byte[] senhaencriptada = entidade.Senha.encrypt(Senha, Chaveencripatação);
+            
+            //Encode
+            byte[] senhaEncriptadaBase64 = Base64.getEncoder().encode(senhaencriptada);
+            senhaencriptadabase64string = new String(senhaEncriptadaBase64, "utf-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return(senhaencriptadabase64string);
+    }
+    
+    //Descodifica o conteúdo da string de base64 para um byte[], e com esse byte[], recupera a chave criptografada
+    public static String descriptografe_e_decodifique(String senhaencriptadabase64string, String Chaveencripatação){
+        String senhadescriptadaedecodificada = null;
+        try {
+            // Decode
+            byte[] senhaEncriptadaParaRecuperarByte = Base64.getDecoder().decode(senhaencriptadabase64string);
+            
+            //Descriptografando
+            senhadescriptadaedecodificada = entidade.Senha.decrypt(senhaEncriptadaParaRecuperarByte, Chaveencripatação);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return(senhadescriptadaedecodificada);
     }
     
     @Override
