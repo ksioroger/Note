@@ -1,16 +1,21 @@
- package interfaces;
+package interfaces;
 
+import interfaces.F5enha;
 import controle.ControleTamanhoTexto;
 import entidade.Senha;
+
+import java.net.URL;
+ 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.net.URL;
-import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+ 
+import javax.swing.JOptionPane;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.InputMap;

@@ -23,7 +23,6 @@ import javax.swing.JOptionPane;
 
 //Janela principal do programa de gestão de senhas
 public class F5enha extends javax.swing.JFrame {
-
     /**
     * Gestor de senhas desenvolvido por Cassiano Rogério.
     */
