@@ -312,8 +312,7 @@ public class Novo extends javax.swing.JDialog {
             }
             else{
                 System.out.println("opção não foi marcada");
-            }
-            
+            }  
         } 
     } 
     
