@@ -20,7 +20,7 @@ import javax.swing.KeyStroke;
 
 /**
  *
- * @author cassi
+ * @author Cassiano Rogério
  */
 public class Gerenciar_User extends javax.swing.JFrame {
     Usuário usuário;

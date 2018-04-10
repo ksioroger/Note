@@ -7,8 +7,9 @@ import sun.misc.BASE64Encoder;
 /**
  *
  * @author cassi
- * algoritmo para encriptar com o MD5
+ * 
  */
+//algoritmo para encriptar com o MD5
 public class EncriptaSenha_MD5 {
     /** Creates a new instance of EncriptaSenha */
     public EncriptaSenha_MD5() {        

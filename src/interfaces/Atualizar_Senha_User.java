@@ -18,6 +18,7 @@ import javax.swing.KeyStroke;
 /**
  *
  * @author cassi
+ * 
  */
 public class Atualizar_Senha_User extends javax.swing.JDialog {
     

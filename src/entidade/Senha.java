@@ -96,7 +96,7 @@ public class Senha {
     }
     
     /**
-     *
+     * Gerar chave de criptografia
      * @param passLength
      * @return
      */
@@ -144,13 +144,13 @@ public class Senha {
     //Testa forca da senha
     /**
      *  Caso a senha for fraca retorna 1, regular 2, boa 3 e forte 4
-     *      >> Senha FRACA: senha composta apenas por,
+     *       Senha FRACA: senha composta apenas por,
      *          letras minúsculas ou 
      *          letras maiúsculas ou 
      *          apenas números ou 
      *          apenas caracteres especiais.
      *  
-     *      >> Senha REGULAR: senha composta apenas
+     *       Senha REGULAR: senha composta apenas
      *          por, letras minúsculas e letras maiúsculas ou
      *          por, letras minúsculas e números ou
      *          por, letras minúsculas e caracteres especiais   ou
@@ -167,7 +167,7 @@ public class Senha {
      *          por, caracteres especiais e letras maiúsculas ou
      *          por, caracteres especiais e números
      * 
-     *      >> Senha BOA: senha composta apenas
+     *       Senha BOA: senha composta apenas
      *          por, letras minúsculas e letras maiúsculas e números ou
      *          por, letras minúsculas e letras maiúsculas e caracteres especiais ou
      *
@@ -204,7 +204,7 @@ public class Senha {
      *          por, caracteres especiais e números e letras minúsculas ou
      *          por, caracteres especiais e números e letras minúsculas
      * 
-     *      >> Senha FORTE: senha composta pela combinação dos quatro tipos de caracteres,
+     *       Senha FORTE: senha composta pela combinação dos quatro tipos de caracteres,
      *          letras minúsculas, letras maiúsculas, números e caracteres especiais.
      * 
      * @param senha

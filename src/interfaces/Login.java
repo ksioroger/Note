@@ -21,7 +21,7 @@ import javax.swing.KeyStroke;
 
 /**
  *
- * @author cassi
+ * @author Cassiano Rogério
  */
 public class Login extends javax.swing.JFrame {
     /**
