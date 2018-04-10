@@ -2,6 +2,7 @@ package interfaces;
 
 import controle.ControleTamanhoTexto;
 import entidade.Senha;
+import entidade.Usuário;
 import entidade.Visão;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -26,22 +27,30 @@ import persistência.BD;
 
 //Permite visualizar os dados do cadastro selecionado
 public class Visualizar extends javax.swing.JDialog {
-
-    private int elemento;
+    private final int elemento;
     Vector<Visão<String>> senhas_cadastradas;
-    /** Creates new form Adicionar */
-    public Visualizar(java.awt.Frame parent, boolean modal, int item) {
+    Usuário userLogado;
+    
+    /** Creates new form Adicionar
+     * @param parent
+     * @param modal
+     * @param item
+     * @param user
+     */
+    public Visualizar(java.awt.Frame parent, boolean modal, int item, Usuário user, Vector<Visão<String>> senhas) {
         super(parent, modal);
+        userLogado = user;
         //Recebe qual foi o cadastro selecionado
         this.elemento = item;
         //Capta os dados dos cadastros de senhas armazenados no banco
-        senhas_cadastradas = Senha.getVisões();
+        senhas_cadastradas = senhas;
+        
         URL url = this.getClass().getResource("/images/key 20x20.png");
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
         initComponents();
         //Imprimir na janela o cadastro da senha selecionado
-        buscarSenhaEImprimir();
+        buscarSenhaEImprimir(false);
         //Setar o botão Okay como botão padrão da janela
         getRootPane().setDefaultButton(jButtonOkay);
     }
@@ -67,6 +76,7 @@ public class Visualizar extends javax.swing.JDialog {
         jPanelBotões = new javax.swing.JPanel();
         jButtonCancelar = new javax.swing.JButton();
         jButtonOkay = new javax.swing.JButton();
+        jButtonVer_Senha = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Visualizar");
@@ -159,22 +169,32 @@ public class Visualizar extends javax.swing.JDialog {
             }
         });
 
+        jButtonVer_Senha.setText("Ver Senha");
+        jButtonVer_Senha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVer_SenhaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelBotõesLayout = new javax.swing.GroupLayout(jPanelBotões);
         jPanelBotões.setLayout(jPanelBotõesLayout);
         jPanelBotõesLayout.setHorizontalGroup(
             jPanelBotõesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBotõesLayout.createSequentialGroup()
-                .addGap(0, 27, Short.MAX_VALUE)
-                .addComponent(jButtonCancelar)
+                .addGap(22, 22, 22)
+                .addComponent(jButtonOkay)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonOkay))
+                .addComponent(jButtonVer_Senha)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonCancelar))
         );
         jPanelBotõesLayout.setVerticalGroup(
             jPanelBotõesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBotõesLayout.createSequentialGroup()
                 .addGroup(jPanelBotõesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonOkay)
-                    .addComponent(jButtonCancelar))
+                    .addComponent(jButtonCancelar)
+                    .addComponent(jButtonVer_Senha))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -246,6 +266,7 @@ public class Visualizar extends javax.swing.JDialog {
         // TODO add your handling code here:
         //Permite confirmar a exclusão usando a tecla enter
         jTextFieldSenha.addKeyListener(new KeyAdapter(){
+            @Override
             public void keyPressed(KeyEvent ke){
                 if(ke.getKeyCode() == KeyEvent.VK_ENTER){
                     jButtonOkay.doClick();
@@ -253,6 +274,14 @@ public class Visualizar extends javax.swing.JDialog {
             }
         });
     }//GEN-LAST:event_jTextFieldSenhaActionPerformed
+
+    private void jButtonVer_SenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVer_SenhaActionPerformed
+        // TODO add your handling code here:
+        //Imprimir na janela o cadastro da senha selecionado
+        buscarSenhaEImprimir(true);
+        //Setar o botão Okay como botão padrão da janela
+        getRootPane().setDefaultButton(jButtonOkay);
+    }//GEN-LAST:event_jButtonVer_SenhaActionPerformed
 
     //Permitir fechar a Janela com a tecla Esc
     @Override
@@ -273,8 +302,8 @@ public class Visualizar extends javax.swing.JDialog {
     }
     
     //Verifica qual foi o cadastro seleciona e imprime na janela
-    private void buscarSenhaEImprimir(){
-        String nome = null;
+    private void buscarSenhaEImprimir(boolean verSenha){
+        String nome, senhaDescriptografada, asteriscoSenha = "";
         Senha senha = null;
         
         //chegar qual foi a senha solicitada
@@ -282,12 +311,25 @@ public class Visualizar extends javax.swing.JDialog {
         
         //Recebe o campo utilizado para realizar a busca
         nome = visãoSelecionada.getChave();
+        
         //Capta os dados da senha
         senha = Senha.buscarSenha(nome);
         
+        //Descriptografando a senha
+        senhaDescriptografada = entidade.Senha.descriptografe_e_decodifique(senha.getsenha(), userLogado.getChave());
+        
         jTextFieldNome.setText(senha.getNome());
         jTextFieldUsuário.setText(senha.getusuário());
-        jTextFieldSenha.setText(senha.getsenha());
+        
+        for (int i = 0; i < senhaDescriptografada.length(); i++) {
+            asteriscoSenha +="*";
+        }
+        if (verSenha) {
+            jTextFieldSenha.setText(senhaDescriptografada);
+        }
+        else{
+            jTextFieldSenha.setText(asteriscoSenha);
+        }
     }
     
     /**
@@ -317,17 +359,13 @@ public class Visualizar extends javax.swing.JDialog {
         }
         //</editor-fold>
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Visualizar dialog = new Visualizar(new javax.swing.JFrame(), true, -2);
+                Usuário user = null;
+                Vector<Visão<String>> senhas = null;
+                Visualizar dialog = new Visualizar(new javax.swing.JFrame(), true, -2, user, senhas);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -343,6 +381,7 @@ public class Visualizar extends javax.swing.JDialog {
     private javax.swing.JPanel Fundo;
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonOkay;
+    private javax.swing.JButton jButtonVer_Senha;
     private javax.swing.JLabel jLabelNome;
     private javax.swing.JLabel jLabelSenha;
     private javax.swing.JLabel jLabelUsuário;

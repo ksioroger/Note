@@ -2,7 +2,6 @@ package entidade;
 
 import persistência.BD;
 
-import java.util.regex.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +24,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class Senha {
     
     private int id;
+    private int iduser;
     private String nome;
     private String usuário;
     private String senha;
@@ -43,12 +43,28 @@ public class Senha {
         this.senha = senha;
     }
     
+    public Senha(int id, int iduser, String nome, String usuário, String senha) {
+        this.id = id;
+        this.iduser = iduser;
+        this.nome = nome;
+        this.usuário = usuário;
+        this.senha = senha;
+    }
+    
     public int getID() {
         return id;
     }
     
     public void setID(int id) {
         this.id = id;
+    }
+    
+    public int getIdUser() {
+        return iduser;
+    }
+    
+    public void setIdUser(int iduser) {
+        this.iduser = iduser;
     }
     
     public String getNome() {
@@ -84,6 +100,27 @@ public class Senha {
      * @param passLength
      * @return
      */
+    public static String gerador_de_chave_de_criptografia(int passLength){
+        java.util.Random r = new java.util.Random();
+        char[] goodChar = {
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
+            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'x', 'w', 'y', 'z',
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
+            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 
+            '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        };
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < passLength; i++){
+            sb.append(goodChar[r.nextInt(goodChar.length)]);
+        }
+        return sb.toString();
+    }
+    
+    /**
+     *
+     * @param passLength
+     * @return
+     */
     public static String geradorDeSenha(int passLength){
         java.util.Random r = new java.util.Random();
         char[] goodChar = {
@@ -95,7 +132,7 @@ public class Senha {
             'ç', 'Ç', 'á', 'à', 'ã', 'Á', 'À', 'Ã', 'é', 'è', 'É', 'È', 'ó',
             'ò', 'õ', 'Ó', 'Ò', 'Õ', 'í', 'ì', 'Í', 'Ì', 'ú', 'ù', 'Ú', 'Ù',
             '!', '"', '#', ':', ';', '<', '=', '>', '?', '@', '[', ']', '^',
-            '`', '{', '|', '}', '~', '_'
+            '`', '{', '|', '}', '~', '_',
         };
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < passLength; i++){
@@ -274,21 +311,23 @@ public class Senha {
     //Executa a instrução sql responsável por realizar a inserção do cadastro no banco de dados
     public static String inserirSenha (Senha senha) {
         BD.criaConexãoComando();
-        String sql = "INSERT INTO senhas (nome, usuario, senha)"
-            + " VALUES (?,?,?)";
+        String sql = "INSERT INTO senhas (iduser, nome, usuario, senha)"
+            + " VALUES (?,?,?,?)";
         try{
             PreparedStatement comando = BD.conexão.prepareStatement(sql);
-            comando.setString(1, senha.getNome());            
-            comando.setString(2, senha.getusuário());
-            comando.setString(3, senha.getsenha());
+            comando.setString(1, Integer.toString(senha.getIdUser()));
+            comando.setString(2, senha.getNome());
+            comando.setString(3, senha.getusuário());
+            comando.setString(4, senha.getsenha());
             comando.executeUpdate();
+            //System.out.println(comando.toString());
             comando.close();
             BD.fechaComandoConexão();
             return null;
         } catch (SQLException exceção_sql) {
             exceção_sql.printStackTrace ();
             BD.fechaComandoConexão();
-            return "Erro na Inserção da entrada no BD"; 
+            return "Erro na Inserção da entrada no BD";
         }
     }
     
@@ -297,29 +336,82 @@ public class Senha {
      *
      * @return
      */
-    public static Vector<Visão<String>> getVisões () {
+    public static Vector<Visão<String>> getVisões (int iduser) {
         BD.criaConexãoComando();
         // Listar todas as senhas
-        String sql = "SELECT * FROM senhas";
+        //String sql = "SELECT * FROM senhas";
+        String sql = "SELECT * FROM senhas WHERE iduser = ?";
         ResultSet lista_resultados = null;
         // Vetor que irá armazenar as senhas do banco
         Vector<Visão<String>> visões = new Vector<Visão<String>> ();
         String nome;
         try {
+            //PreparedStatement comando = BD.conexão.prepareStatement(sql);
             PreparedStatement comando = BD.conexão.prepareStatement(sql);
+            comando.setString(1, Integer.toString(iduser));
             lista_resultados = comando.executeQuery();
             
             while (lista_resultados.next()){
-                //recuperar as chave
+                String asteriscoSenha = "";
+                int tamanho;
+                //Recuperar as chave
                 nome = lista_resultados.getString("nome"); 
+                //Retorna os asterisco representando a senha no tamanho da senha armazenada
+                tamanho = lista_resultados.getString("senha").length();
+                for (int i = 0; i < tamanho; i++) {
+                    asteriscoSenha +="*";
+                }
                 // Adiciona os valores recuperados no vetor
                 visões.addElement(new Visão<String> (nome, 
                         "Nome: " + nome
                         + " |  Usuário: " + lista_resultados.getString("usuario")
-                        + " | Senha: ********"));
+                        + " | Senha: "+ asteriscoSenha));
             }
             lista_resultados.close();
             comando.close();
+            BD.fechaComandoConexão();
+        } catch (SQLException exceção_sql) {exceção_sql.printStackTrace ();}
+        return visões;
+    }
+    
+    //Cria um vector com os dados de cadastro de senhas cadastradas
+    /**
+     *
+     * @return
+     */
+    public static Vector<Visão<String>> getVisõesParaBusca (int iduser) {
+        BD.criaConexãoComando();
+        // Listar todas as senhas
+        String sql = "SELECT * FROM senhas WHERE iduser = ?";
+        ResultSet lista_resultados = null;
+        // Vetor que irá armazenar as senhas do banco
+        Vector<Visão<String>> visões = new Vector<Visão<String>> ();
+        String nome, user;
+        try {
+            PreparedStatement comando = BD.conexão.prepareStatement(sql);
+            comando.setString(1, Integer.toString(iduser));
+            lista_resultados = comando.executeQuery();
+            
+            while (lista_resultados.next()){
+                String asteriscoSenha = "";
+                int tamanho;
+                //Recuperar as chave
+                nome = lista_resultados.getString("nome");
+                user = lista_resultados.getString("usuario");
+                //Retorna os asterisco representando a senha no tamanho da senha armazenada
+                tamanho = lista_resultados.getString("senha").length();
+                for (int i = 0; i < tamanho; i++) {
+                    asteriscoSenha +="*";
+                }
+                // Adiciona os valores recuperados no vetor
+                visões.addElement(new Visão<String> (nome, user,
+                        "Nome: " + nome
+                        + " |  Usuário: " + lista_resultados.getString("usuario")
+                        + " | Senha: "+ asteriscoSenha));
+            }
+            lista_resultados.close();
+            comando.close();
+            BD.fechaComandoConexão();
         } catch (SQLException exceção_sql) {exceção_sql.printStackTrace ();}
         return visões;
     }
@@ -335,6 +427,7 @@ public class Senha {
     
     //Busca dados de um cadastro de senha no banco e retorna suas informações incluindo sua chave primária
     public static Senha buscarSenhaEPK (String nome) {
+        BD.criaConexãoComando();
         String sql = "SELECT id, nome, usuario, senha FROM senhas WHERE nome = ?";
         ResultSet lista_resultados = null;
         Senha senha = null;
@@ -352,6 +445,7 @@ public class Senha {
             }
             lista_resultados.close();
             comando.close();
+            BD.fechaComandoConexão();
             } catch (SQLException exceção_sql) {
                 exceção_sql.printStackTrace ();
                 senha = null;
@@ -361,12 +455,14 @@ public class Senha {
     
     //Remove o cadastro informado através de sua chave primária(id) do banco de dados
     public static String removerSenha (int id) {
+        BD.criaConexãoComando();
         String sql = "DELETE FROM senhas WHERE id = ?";
         try {
             PreparedStatement comando = BD.conexão.prepareStatement(sql);
             comando.setString(1, Integer.toString(id));
             comando.executeUpdate();
             comando.close();
+            BD.fechaComandoConexão();
             return null;
         } catch (SQLException exceção_sql) {
             exceção_sql.printStackTrace ();
@@ -381,6 +477,7 @@ public class Senha {
      * @return
      */
     public static Senha buscarSenha (String nome) {
+        BD.criaConexãoComando();
         String sql = "SELECT nome, usuario, senha FROM senhas WHERE nome = ?";
         ResultSet lista_resultados = null;
         Senha senha = null;
@@ -395,6 +492,7 @@ public class Senha {
             }
             lista_resultados.close();
             comando.close();
+            BD.fechaComandoConexão();
             } catch (SQLException exceção_sql) {
                 exceção_sql.printStackTrace ();
                 senha = null;

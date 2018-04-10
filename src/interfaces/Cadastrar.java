@@ -1,6 +1,7 @@
 package interfaces;
 
 import entidade.Usuário;
+import controle.ControleTamanhoTexto;
 import static entidade.Usuário.inserirUsuario;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -90,11 +91,16 @@ public class Cadastrar extends javax.swing.JDialog {
                 .addGap(4, 4, 4))
         );
 
+        jFormattedTextFieldUser.setDocument( new ControleTamanhoTexto(30) );
+
+        jPasswordFieldKey.setDocument( new ControleTamanhoTexto(30) );
         jPasswordFieldKey.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordFieldKeyActionPerformed(evt);
             }
         });
+
+        jPasswordFieldKey_Reentrada.setDocument( new ControleTamanhoTexto(30) );
 
         javax.swing.GroupLayout jPanelKeyLayout = new javax.swing.GroupLayout(jPanelKey);
         jPanelKey.setLayout(jPanelKeyLayout);
@@ -221,7 +227,7 @@ public class Cadastrar extends javax.swing.JDialog {
                 if (forçaSenha >= 4) {
                     if ((dados.getsenha().length()) >= 8) {
                         //Gera uma chave de criptografia automática
-                        dados.setChave(entidade.Senha.geradorDeSenha(16));
+                        dados.setChave(entidade.Senha.gerador_de_chave_de_criptografia(16));
                         //Prepara a chave para criptografar os dados, e encripta a senha digitada em MD5
                         dados = prepararDadosparaArmazenar(dados);
                         //realiza a inserção dos dados informados no banco de dados
@@ -372,7 +378,7 @@ public class Cadastrar extends javax.swing.JDialog {
             }
         }
         //Gera uma chave de criptografia automática
-        dados.setChave(entidade.Senha.geradorDeSenha(16));
+        dados.setChave(entidade.Senha.gerador_de_chave_de_criptografia(16));
         return dados;
     }
     

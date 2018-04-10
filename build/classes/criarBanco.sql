@@ -22,6 +22,7 @@ USE note;
 -- Cria a tabela
 CREATE TABLE  IF NOT EXISTS senhas (
 	id  INTEGER AUTO_INCREMENT,
+        iduser INTEGER NOT NULL,
 	nome CHAR(30) NOT NULL,
 	usuario VARCHAR(50) NOT NULL,
 	senha VARCHAR(50) NOT NULL,

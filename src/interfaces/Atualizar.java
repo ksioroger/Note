@@ -2,6 +2,7 @@ package interfaces;
 
 import controle.ControleTamanhoTexto;
 import entidade.Senha;
+import entidade.Usuário;
 import entidade.Visão;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -28,19 +29,21 @@ import javax.swing.KeyStroke;
 public class Atualizar extends javax.swing.JDialog {
     private int elemento;
     Vector<Visão<String>> senhas_cadastradas;
+    Usuário userLogado;
     /** Creates new form Adicionar */
-    public Atualizar(java.awt.Frame parent, boolean modal, int item) {
+    public Atualizar(java.awt.Frame parent, boolean modal, int item, Usuário user, Vector<Visão<String>> senhas) {
         super(parent, modal);
+        userLogado = user;
         //Recebe qual foi o cadastro selecionado
         this.elemento = item;
         //Capta os dados dos cadastros de senhas armazenados no banco
-        senhas_cadastradas = Senha.getVisões();
+        senhas_cadastradas = senhas;
         URL url = this.getClass().getResource("/images/key 20x20.png");
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
         initComponents();
         //Exibe na tela as informações do cadastro de senha que foi selecionado
-        visualizarSenha();
+        visualizarSenha(false);
     }
     /** This method is called from within the constructor to
      * initialize the form.
@@ -64,6 +67,7 @@ public class Atualizar extends javax.swing.JDialog {
         jPanelBotões = new javax.swing.JPanel();
         jButtonCancelar = new javax.swing.JButton();
         jButtonAtualizar = new javax.swing.JButton();
+        jButtonVer_Senha = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Atualizar");
@@ -102,9 +106,9 @@ public class Atualizar extends javax.swing.JDialog {
 
         jTextFieldNome.setDocument( new ControleTamanhoTexto(30) );
 
-        jTextFieldUsuário.setDocument( new ControleTamanhoTexto(50) );
+        jTextFieldUsuário.setDocument( new ControleTamanhoTexto(30) );
 
-        jTextFieldSenha.setDocument( new ControleTamanhoTexto(50) );
+        jTextFieldSenha.setDocument( new ControleTamanhoTexto(30) );
         jTextFieldSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldSenhaActionPerformed(evt);
@@ -115,7 +119,7 @@ public class Atualizar extends javax.swing.JDialog {
         jPanelTextos.setLayout(jPanelTextosLayout);
         jPanelTextosLayout.setHorizontalGroup(
             jPanelTextosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextFieldSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+            .addComponent(jTextFieldSenha)
             .addComponent(jTextFieldUsuário)
             .addComponent(jTextFieldNome, javax.swing.GroupLayout.Alignment.TRAILING)
         );
@@ -146,22 +150,32 @@ public class Atualizar extends javax.swing.JDialog {
             }
         });
 
+        jButtonVer_Senha.setText("Ver Senha");
+        jButtonVer_Senha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVer_SenhaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelBotõesLayout = new javax.swing.GroupLayout(jPanelBotões);
         jPanelBotões.setLayout(jPanelBotõesLayout);
         jPanelBotõesLayout.setHorizontalGroup(
             jPanelBotõesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBotõesLayout.createSequentialGroup()
-                .addGap(0, 27, Short.MAX_VALUE)
-                .addComponent(jButtonCancelar)
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addComponent(jButtonAtualizar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonAtualizar))
+                .addComponent(jButtonVer_Senha)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonCancelar))
         );
         jPanelBotõesLayout.setVerticalGroup(
             jPanelBotõesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBotõesLayout.createSequentialGroup()
                 .addGroup(jPanelBotõesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAtualizar)
-                    .addComponent(jButtonCancelar))
+                    .addComponent(jButtonCancelar)
+                    .addComponent(jButtonVer_Senha))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -173,12 +187,10 @@ public class Atualizar extends javax.swing.JDialog {
             jPanelEtiquetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelEtiquetasLayout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanelEtiquetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanelTextos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanelEtiquetasLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanelBotões, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jPanelBotões, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanelEtiquetasLayout.setVerticalGroup(
             jPanelEtiquetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,6 +246,14 @@ public class Atualizar extends javax.swing.JDialog {
         });
     }//GEN-LAST:event_jTextFieldSenhaActionPerformed
 
+    private void jButtonVer_SenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVer_SenhaActionPerformed
+        // TODO add your handling code here:
+        //Imprimir na janela o cadastro da senha selecionado
+        visualizarSenha(true);
+        //Setar o botão Okay como botão padrão da janela
+        getRootPane().setDefaultButton(jButtonAtualizar);
+    }//GEN-LAST:event_jButtonVer_SenhaActionPerformed
+
     //Permitir fechar a Janela com a tecla Esc
     @Override
     protected JRootPane createRootPane() {
@@ -253,8 +273,8 @@ public class Atualizar extends javax.swing.JDialog {
     }
     
     //Exibe na janela os dados do cadastro da senha selecionada
-    private void visualizarSenha(){
-        String nome = null;
+    private void visualizarSenha(boolean verSenha){
+        String nome, senhaDescriptografada, asteriscoSenha = "";
         Senha senha = null;
         
         //chegar qual foi a senha solicitada para alterar
@@ -265,10 +285,22 @@ public class Atualizar extends javax.swing.JDialog {
         //Capta os dados da senha atual
         senha = Senha.buscarSenha(nome);
         
+        //Descriptografando a senha
+        senhaDescriptografada = entidade.Senha.descriptografe_e_decodifique(senha.getsenha(), userLogado.getChave());
+        
         //Imprimir na tela os dados atuais
         jTextFieldNome.setText(senha.getNome());
         jTextFieldUsuário.setText(senha.getusuário());
-        jTextFieldSenha.setText(senha.getsenha());
+        
+        for (int i = 0; i < senhaDescriptografada.length(); i++) {
+            asteriscoSenha +="*";
+        }
+        if (verSenha) {
+            jTextFieldSenha.setText(senhaDescriptografada);
+        }
+        else{
+            jTextFieldSenha.setText(asteriscoSenha);
+        }
     }
     
     //Capta a senha e realiza a atualização no banco
@@ -276,7 +308,7 @@ public class Atualizar extends javax.swing.JDialog {
         String nome = null;
         Senha senha = null;
         Senha novaSenha = null;
-        String mensagem_erro = null;
+        String mensagem_erro = "";
         
         //chegar qual foi a senha solicitada
         Visão<String> visãoSelecionada = senhas_cadastradas.elementAt(elemento);
@@ -286,36 +318,39 @@ public class Atualizar extends javax.swing.JDialog {
         //Capta os dados da senha e sua chave primária (ID)
         senha = Senha.buscarSenhaEPK(nome);
         
-        //Adicionar os novos dados para serem atualizados no BD
-        novaSenha = obterSenhaInformada();
-        novaSenha.setID(senha.getID());
+        //Recebe os dados digitados, para serem atualizados no BD
+        novaSenha = obterSenhaInformada(senha.getsenha());
         
         //Se todos os dados foram digitados irá realizar a a atualização no banco
         if (novaSenha != null){
+            novaSenha.setID(senha.getID());
             mensagem_erro = Senha.alterarSenha(novaSenha);
-        }
-        else JOptionPane.showMessageDialog(this, "Por gentileza preencher todos os campos", "ERRO",
-            JOptionPane.ERROR_MESSAGE);
-        
-        //Chega se a atualização foi concluida sem erros e informa ao usuário
-        if (mensagem_erro == null){           
-            if(senha.getNome().equals(novaSenha.getNome())){
-                mensagem_erro = "Senha " + senha.getNome() + " foi atualizada!"; 
-                JOptionPane.showMessageDialog(this, mensagem_erro);
-            } else {
-                mensagem_erro = senha.getNome() + "Senha " + " foi atualizada para " + novaSenha.getNome() + "!"; 
-                JOptionPane.showMessageDialog(this, mensagem_erro);
+            //Chega se a atualização foi concluida sem erros e informa ao usuário
+            if (mensagem_erro == null){           
+                if(senha.getNome().equals(novaSenha.getNome())){
+                    mensagem_erro = "Senha " + senha.getNome() + " foi atualizada!"; 
+                    JOptionPane.showMessageDialog(this, mensagem_erro);
+                } else {
+                    mensagem_erro = senha.getNome() + "Senha " + " foi atualizada para " + novaSenha.getNome() + "!"; 
+                    JOptionPane.showMessageDialog(this, mensagem_erro);
+                }
+                this.dispose();
             }
-            this.dispose();
+            else {
+                JOptionPane.showMessageDialog(this, mensagem_erro, "ERRO", JOptionPane.ERROR_MESSAGE);
+            } 
         }
-        else {
-            JOptionPane.showMessageDialog(this, mensagem_erro, "ERRO", JOptionPane.ERROR_MESSAGE);
-        } 
+        else JOptionPane.showMessageDialog(this, "Por gentileza preencher todos os campos corretamente."
+                + "\nCaso for atualizar a senha, não se esqueça de limpar"
+                + "\no campo de senha caso a senha esteja oculta."
+                + "\n\nVocê deve atualizar ao menos a senha!", "Erro ao atualizar dados",
+            JOptionPane.ERROR_MESSAGE);
     }
     
     //Capta os dados digitados pelo usuário
-    private Senha obterSenhaInformada(){
+    private Senha obterSenhaInformada(String SenhaAtivaCriptografada){
         entidade.Senha senha = null;
+        String senhaDescriptografada = "", asteriscoSenha = "";
         
         String Nome =  jTextFieldNome.getText();
         if (Nome.isEmpty()) return null;
@@ -324,6 +359,48 @@ public class Atualizar extends javax.swing.JDialog {
         String Senha = jTextFieldSenha.getText();
         if (Senha.isEmpty()) return null;
         
+        //Descriptografando a senha
+        senhaDescriptografada = entidade.Senha.descriptografe_e_decodifique(SenhaAtivaCriptografada, userLogado.getChave());
+        for (int i = 0; i < senhaDescriptografada.length(); i++) {
+            asteriscoSenha +="*";
+        }
+        if (((senhaDescriptografada.equals(Senha)==false) && (asteriscoSenha.equals(Senha)==false))){
+            if (Senha.contains(asteriscoSenha)==false) {
+                int forca = entidade.Senha.testar_Forca_Da_Senha(Senha);
+                if(forca <= 1){
+                    JOptionPane.showMessageDialog(this,
+                            "Sua senha não possui os pré-requisitos de uma senha segura,\n recomendamos que mude-a assim que possível."
+                                    + "\n\nUse caracteres maiúsculos, minúsculos, números\ne caracteres especiais, por exemplo: *>F5s3nh@<*"
+                                    + "\n\nForça: " + forca+", INSEGURA", "Insegura", JOptionPane.WARNING_MESSAGE);
+                }
+                else if(forca == 2){
+                    JOptionPane.showMessageDialog(this, 
+                            "Sua senha ainda não é tão boa,\n recomendamos que mude-a asim que possível."
+                                    + "\n\nUse caracteres maiúsculos, minúsculos, números\ne caracteres especiais, por exemplo: *>F5s3nh@<*"
+                                    + "\n\nForça: " + forca+", REGULAR", "REGULAR", JOptionPane.WARNING_MESSAGE);
+                }
+                else if(forca == 3){
+                    JOptionPane.showMessageDialog(this, 
+                            "Sua senha é boa, porém ainda sim recomendamos\nque mude-a asim que possível, para uma mais forte."
+                                    + "\n\nUse caracteres maiúsculos, minúsculos, números\ne caracteres especiais, por exemplo: *>F5s3nh@<*"
+                                    + "\n\nForça: " + forca+", BOA", "Boa", JOptionPane.WARNING_MESSAGE);
+                }
+                else if(forca >= 4){
+                    JOptionPane.showMessageDialog(this, 
+                            "Sua senha é forte, recomendamos usar senhas neste padrão."
+                                    + "\n\nSempre use caracteres maiúsculos, minúsculos, números\ne caracteres especiais, por exemplo: *>F5s3nh@<*"
+                                    + "\n\nForça: " + forca+", FORTE", "FORTE", JOptionPane.WARNING_MESSAGE);
+                }
+                /*  Criptografando senha usando AES  */
+                Senha = entidade.Senha.criptografe_e_codifique(Senha, userLogado.getChave());
+            }
+            else{
+                return null;
+            }
+        }
+        else {
+            Senha = SenhaAtivaCriptografada;
+        }
         return new Senha (Nome,Usuário, Senha);
     }
     
@@ -354,25 +431,13 @@ public class Atualizar extends javax.swing.JDialog {
         }
         //</editor-fold>
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Atualizar dialog = new Atualizar(new javax.swing.JFrame(), true, -2);
+                Usuário user = null;
+                Vector<Visão<String>> senhas = null;
+                Atualizar dialog = new Atualizar(new javax.swing.JFrame(), true, -2, user, senhas);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -388,6 +453,7 @@ public class Atualizar extends javax.swing.JDialog {
     private javax.swing.JPanel Fundo;
     private javax.swing.JButton jButtonAtualizar;
     private javax.swing.JButton jButtonCancelar;
+    private javax.swing.JButton jButtonVer_Senha;
     private javax.swing.JLabel jLabelNome;
     private javax.swing.JLabel jLabelSenha;
     private javax.swing.JLabel jLabelUsuário;

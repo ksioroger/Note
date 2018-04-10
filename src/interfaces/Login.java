@@ -1,19 +1,15 @@
 package interfaces;
 
 import entidade.Usuário;
+import controle.ControleTamanhoTexto;
 import static entidade.Usuário.buscar_Usuário_e_PK;
-import interfaces.F5enha;
-import interfaces.Cadastrar;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 import java.net.URL;
 
-import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**
@@ -85,12 +81,14 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPasswordFieldKey.setDocument( new ControleTamanhoTexto(30) );
         jPasswordFieldKey.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordFieldKeyActionPerformed(evt);
             }
         });
 
+        jFormattedTextFieldUser.setDocument( new ControleTamanhoTexto(30) );
         jFormattedTextFieldUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jFormattedTextFieldUserActionPerformed(evt);
@@ -260,25 +258,13 @@ public class Login extends javax.swing.JFrame {
     private void jPasswordFieldKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldKeyActionPerformed
         // TODO add your handling code here:
         //Quando estiver no campo de texto da senha permite confirmar usando a tecla enter
-        jPasswordFieldKey.addKeyListener(new KeyAdapter(){
-            public void keyPressed(KeyEvent ke){
-                if(ke.getKeyCode() == KeyEvent.VK_ENTER){
-                    jButtonEntrar.doClick();
-                }
-            }
-        });
+        jButtonEntrar.doClick();
     }//GEN-LAST:event_jPasswordFieldKeyActionPerformed
 
     private void jFormattedTextFieldUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldUserActionPerformed
         // TODO add your handling code here:
-        //Quando estiver no campo de texto da senha permite confirmar usando a tecla enter
-        jFormattedTextFieldUser.addKeyListener(new KeyAdapter(){
-            public void keyPressed(KeyEvent ke){
-                if(ke.getKeyCode() == KeyEvent.VK_ENTER){
-                    jButtonEntrar.doClick();
-                }
-            }
-        });
+        //Pula para o campo de senha
+        jPasswordFieldKey.requestFocus();
     }//GEN-LAST:event_jFormattedTextFieldUserActionPerformed
 
     public Usuário capturaNomeSenha(){

@@ -5,6 +5,7 @@ import controle.controladorAtalhos;
 
 import entidade.Senha;
 import entidade.Visão;
+import entidade.Usuário;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -34,10 +35,9 @@ public class F5enha extends javax.swing.JFrame {
     public Vector<Visão<String>> senhas_cadastradas;
     String userLogado = null;
     
-       ///criar panel com fundo aqui/////
     public F5enha(String nomeUser) {
         userLogado = nomeUser;
-        senhas_cadastradas = Senha.getVisões();
+        senhas_cadastradas = Senha.getVisões(Usuário.buscar_Usuário_Todos_os_dados(userLogado).getID());
         URL url = this.getClass().getResource("/images/key 20x20.png");
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
@@ -60,7 +60,7 @@ public class F5enha extends javax.swing.JFrame {
         jListSenhasCadastradas = new javax.swing.JList();
         jLabelFundoListagem = new javax.swing.JLabel();
         jPanelBotões = new javax.swing.JPanel();
-        jButtonUpdate = new javax.swing.JButton();
+        jButtonBuscar = new javax.swing.JButton();
         jButtonNovo = new javax.swing.JButton();
         jButtonVisualizar = new javax.swing.JButton();
         jButtonAtualizar = new javax.swing.JButton();
@@ -131,13 +131,13 @@ public class F5enha extends javax.swing.JFrame {
             .addComponent(jScrollPaneListadeSenhas, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        jButtonUpdate.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButtonUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/find 40x40.png"))); // NOI18N
-        jButtonUpdate.setMnemonic('b');
-        jButtonUpdate.setText("Buscar");
-        jButtonUpdate.addActionListener(new java.awt.event.ActionListener() {
+        jButtonBuscar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButtonBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/find 40x40.png"))); // NOI18N
+        jButtonBuscar.setMnemonic('b');
+        jButtonBuscar.setText("Buscar");
+        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonUpdateActionPerformed(evt);
+                jButtonBuscarActionPerformed(evt);
             }
         });
 
@@ -197,7 +197,7 @@ public class F5enha extends javax.swing.JFrame {
         jPanelBotõesLayout.setHorizontalGroup(
             jPanelBotõesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBotõesLayout.createSequentialGroup()
-                .addComponent(jButtonUpdate)
+                .addComponent(jButtonBuscar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonNovo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -214,7 +214,7 @@ public class F5enha extends javax.swing.JFrame {
             .addGroup(jPanelBotõesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelBotõesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonUpdate)
+                    .addComponent(jButtonBuscar)
                     .addComponent(jButtonNovo)
                     .addComponent(jButtonVisualizar)
                     .addComponent(jButtonAtualizar)
@@ -320,7 +320,7 @@ public class F5enha extends javax.swing.JFrame {
 
         jMenuBarMenus.add(jMenuSobre);
 
-        jMenuEspaçamento.setText("                                                                                                                                                           ");
+        jMenuEspaçamento.setText("                                                                                                                         ");
         jMenuEspaçamento.setContentAreaFilled(false);
         jMenuEspaçamento.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jMenuEspaçamento.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
@@ -410,7 +410,7 @@ public class F5enha extends javax.swing.JFrame {
         //Limpa o Jlist que lista os cadastro
         jListSenhasCadastradas.clearSelection();
         //Atualiza o vector com as lista de cadastros
-        senhas_cadastradas = Senha.getVisões();
+        senhas_cadastradas = Senha.getVisões(Usuário.buscar_Usuário_Todos_os_dados(userLogado).getID());
         //Recria o Jlist que lista os cadastros de senhas com o vector atualizado
         jListSenhasCadastradas.setModel(new DefaultComboBoxModel(senhas_cadastradas));
     }
@@ -437,9 +437,20 @@ public class F5enha extends javax.swing.JFrame {
     }
     
     //Cria a janela de novo cadastro de senha
+    private void buscar(){
+        //Criar uma nova janela, para buscar dados
+        Buscar novaJanelaBuscar = new Buscar(this,true, Usuário.buscar_Usuário_Todos_os_dados(userLogado));
+        novaJanelaBuscar.setLocationRelativeTo(null);
+        novaJanelaBuscar.setResizable(false);
+        novaJanelaBuscar.setVisible(true);
+        //Recria a Lista de senhas cadastradas na tela
+        RefazerJList();
+    }
+    
+    //Cria a janela de novo cadastro de senha
     private void novo(){
         //Criar uma nova janela, para adicionar dados
-        Novo novodialogo = new Novo(this,true);
+        Novo novodialogo = new Novo(this,true, Usuário.buscar_Usuário_Todos_os_dados(userLogado));
         novodialogo.setLocationRelativeTo(null);
         novodialogo.setResizable(false);
         novodialogo.setVisible(true);
@@ -457,7 +468,7 @@ public class F5enha extends javax.swing.JFrame {
             JOptionPane.ERROR_MESSAGE);
         } else {
             //Criar uma nova janela, para visualizar a senha que foi selecionada
-            Visualizar visualizardialogo = new Visualizar(this,true,item);
+            Visualizar visualizardialogo = new Visualizar(this,true,item, Usuário.buscar_Usuário_Todos_os_dados(userLogado), senhas_cadastradas);
             visualizardialogo.setLocationRelativeTo(null);
             visualizardialogo.setResizable(false);
             visualizardialogo.setVisible(true);
@@ -474,7 +485,7 @@ public class F5enha extends javax.swing.JFrame {
             JOptionPane.ERROR_MESSAGE);
         } else {
             //Criar uma nova janela, para visualizar a senha que foi selecionada
-            Atualizar atualizardialogo = new Atualizar(this,true,item);
+            Atualizar atualizardialogo = new Atualizar(this,true,item, Usuário.buscar_Usuário_Todos_os_dados(userLogado), senhas_cadastradas);
             atualizardialogo.setLocationRelativeTo(null);
             atualizardialogo.setResizable(false);
             atualizardialogo.setVisible(true);
@@ -492,7 +503,7 @@ public class F5enha extends javax.swing.JFrame {
             JOptionPane.ERROR_MESSAGE);
         } else {
             //Criar uma nova janela, para visualizar dados
-            Excluir excluirdialogo = new Excluir(this,true,item);
+            Excluir excluirdialogo = new Excluir(this,true,item, Usuário.buscar_Usuário_Todos_os_dados(userLogado), senhas_cadastradas);
             excluirdialogo.setLocationRelativeTo(null);
             excluirdialogo.setResizable(false);
             excluirdialogo.setVisible(true);
@@ -548,11 +559,13 @@ public class F5enha extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemSobreActionPerformed
 
     //Botão para atualizar a interface do programa
-    private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
+    private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
         // TODO add your handling code here:
         //Refaz a lista de cadastro na tela principal
         RefazerJList();
-    }//GEN-LAST:event_jButtonUpdateActionPerformed
+        buscar();
+        RefazerJList();
+    }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void jMenuItemSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSairActionPerformed
         // TODO add your handling code here:
@@ -647,31 +660,31 @@ public class F5enha extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAtualizar;
-    private javax.swing.JButton jButtonExcluir;
-    private javax.swing.JButton jButtonNovo;
-    private javax.swing.JButton jButtonSair;
-    private javax.swing.JButton jButtonUpdate;
-    private javax.swing.JButton jButtonVisualizar;
-    private javax.swing.JLabel jLabelFundoListagem;
+    javax.swing.JButton jButtonAtualizar;
+    javax.swing.JButton jButtonBuscar;
+    javax.swing.JButton jButtonExcluir;
+    javax.swing.JButton jButtonNovo;
+    javax.swing.JButton jButtonSair;
+    javax.swing.JButton jButtonVisualizar;
+    javax.swing.JLabel jLabelFundoListagem;
     public javax.swing.JList jListSenhasCadastradas;
-    private javax.swing.JMenuBar jMenuBarMenus;
-    private javax.swing.JMenu jMenuEditar;
-    private javax.swing.JMenu jMenuEspaçamento;
-    private javax.swing.JMenuItem jMenuItemAtalhos;
-    private javax.swing.JMenuItem jMenuItemAtualizar;
-    private javax.swing.JMenuItem jMenuItemBotão_Sair;
-    private javax.swing.JMenuItem jMenuItemExcluir;
-    private javax.swing.JMenuItem jMenuItemGerenciar;
-    private javax.swing.JMenuItem jMenuItemNovo;
-    private javax.swing.JMenuItem jMenuItemSair;
-    private javax.swing.JMenuItem jMenuItemSobre;
-    private javax.swing.JMenuItem jMenuItemTrocar_Usuário;
-    private javax.swing.JMenuItem jMenuItemVisualizar;
-    private javax.swing.JMenu jMenuMenuUsuário;
-    private javax.swing.JMenu jMenuSobre;
-    private javax.swing.JPanel jPanelBotões;
-    private javax.swing.JPanel jPanelListagem;
-    private javax.swing.JScrollPane jScrollPaneListadeSenhas;
+    javax.swing.JMenuBar jMenuBarMenus;
+    javax.swing.JMenu jMenuEditar;
+    javax.swing.JMenu jMenuEspaçamento;
+    javax.swing.JMenuItem jMenuItemAtalhos;
+    javax.swing.JMenuItem jMenuItemAtualizar;
+    javax.swing.JMenuItem jMenuItemBotão_Sair;
+    javax.swing.JMenuItem jMenuItemExcluir;
+    javax.swing.JMenuItem jMenuItemGerenciar;
+    javax.swing.JMenuItem jMenuItemNovo;
+    javax.swing.JMenuItem jMenuItemSair;
+    javax.swing.JMenuItem jMenuItemSobre;
+    javax.swing.JMenuItem jMenuItemTrocar_Usuário;
+    javax.swing.JMenuItem jMenuItemVisualizar;
+    javax.swing.JMenu jMenuMenuUsuário;
+    javax.swing.JMenu jMenuSobre;
+    javax.swing.JPanel jPanelBotões;
+    javax.swing.JPanel jPanelListagem;
+    javax.swing.JScrollPane jScrollPaneListadeSenhas;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,6 +1,7 @@
 package interfaces;
 
 import entidade.Senha;
+import entidade.Usuário;
 import entidade.Visão;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -27,13 +28,16 @@ public class Excluir extends javax.swing.JDialog {
 
     private int elemento;
     Vector<Visão<String>> senhas_cadastradas;
+    Usuário userLogado;
+    
     /** Creates new form Adicionar */
-    public Excluir(java.awt.Frame parent, boolean modal, int item) {
+    public Excluir(java.awt.Frame parent, boolean modal, int item, Usuário user, Vector<Visão<String>> senhas) {
         super(parent, modal);
+        userLogado = user;
         //Recebe qual foi o cadastro selecionado
         this.elemento = item;
         //Capta os dados dos cadastros de senhas armazenados no banco
-        senhas_cadastradas = Senha.getVisões();
+        senhas_cadastradas = senhas;
         URL url = this.getClass().getResource("/images/key 20x20.png");
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
@@ -86,10 +90,10 @@ public class Excluir extends javax.swing.JDialog {
         jPanelBotõesLayout.setHorizontalGroup(
             jPanelBotõesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBotõesLayout.createSequentialGroup()
-                .addGap(0, 27, Short.MAX_VALUE)
-                .addComponent(jButtonCancelar)
+                .addGap(0, 18, Short.MAX_VALUE)
+                .addComponent(jButtonOkay)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonOkay))
+                .addComponent(jButtonCancelar))
         );
         jPanelBotõesLayout.setVerticalGroup(
             jPanelBotõesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,25 +108,30 @@ public class Excluir extends javax.swing.JDialog {
 
         jLabel1.setText("Tem certeza que deseja remover a senha:");
 
+        jLabelInformaçãoDeRemoção.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+
         javax.swing.GroupLayout jPanelItensLayout = new javax.swing.GroupLayout(jPanelItens);
         jPanelItens.setLayout(jPanelItensLayout);
         jPanelItensLayout.setHorizontalGroup(
             jPanelItensLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelItensLayout.createSequentialGroup()
-                .addContainerGap(148, Short.MAX_VALUE)
-                .addComponent(jPanelBotões, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanelItensLayout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jLabelInformaçãoDeRemoção, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(110, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelItensLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanelBotões, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelItensLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelInformaçãoDeRemoção, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelItensLayout.setVerticalGroup(
             jPanelItensLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelItensLayout.createSequentialGroup()
+                .addGap(7, 7, 7)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelInformaçãoDeRemoção, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(jPanelBotões, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -137,9 +146,7 @@ public class Excluir extends javax.swing.JDialog {
         );
         FundoLayout.setVerticalGroup(
             FundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FundoLayout.createSequentialGroup()
-                .addComponent(jPanelItens, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanelItens, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         getContentPane().add(Fundo);
@@ -263,25 +270,13 @@ public class Excluir extends javax.swing.JDialog {
         }
         //</editor-fold>
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Excluir dialog = new Excluir(new javax.swing.JFrame(), true, -2);
+                Usuário user = null;
+                Vector<Visão<String>> senhas = null;
+                Excluir dialog = new Excluir(new javax.swing.JFrame(), true, -2, user, senhas);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

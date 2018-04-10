@@ -64,7 +64,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jPanelTextos" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="95" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               <Component id="jPanelBotões" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -136,7 +136,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jTextFieldSenha" max="32767" attributes="0"/>
+                      <Component id="jTextFieldSenha" pref="340" max="32767" attributes="0"/>
                       <Component id="jTextFieldUsuário" max="32767" attributes="0"/>
                       <Component id="jTextFieldNome" alignment="1" max="32767" attributes="0"/>
                   </Group>
@@ -167,7 +167,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextFieldUsu&#xe1;rio">
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTextFieldUsu&#xe1;rio.setDocument( new ControleTamanhoTexto(50) );"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTextFieldUsu&#xe1;rio.setDocument( new ControleTamanhoTexto(30) );"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextFieldSenha">
@@ -175,7 +175,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldSenhaActionPerformed"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTextFieldSenha.setDocument( new ControleTamanhoTexto(50) );"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTextFieldSenha.setDocument( new ControleTamanhoTexto(30) );"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -186,12 +186,12 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="26" max="32767" attributes="0"/>
                           <Component id="jCheckBoxMúltiplasSenhas" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButtonCancelar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jButtonOkay" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jButtonCancelar" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>

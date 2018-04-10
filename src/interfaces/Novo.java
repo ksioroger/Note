@@ -1,16 +1,22 @@
  package interfaces;
 
 import controle.ControleTamanhoTexto;
+ 
 import entidade.Senha;
+import entidade.Usuário;
+ 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.net.URL;
-import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+ 
+import java.net.URL;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.InputMap;
@@ -25,11 +31,15 @@ import javax.swing.KeyStroke;
 
 //Cria uma janela para inserção de nova senha no banco de dados
 public class Novo extends javax.swing.JDialog {
+    Usuário userLogado;
     /** Creates new form Adicionar
      * @param parent
-     * @param modal */
-    public Novo(java.awt.Frame parent, boolean modal) {
+     * @param modal
+     * @param user 
+     */
+    public Novo(java.awt.Frame parent, boolean modal, Usuário user) {
         super(parent, modal);
+        userLogado = user;
         URL url = this.getClass().getResource("/images/key 20x20.png");
         Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(iconeTitulo);
@@ -104,9 +114,9 @@ public class Novo extends javax.swing.JDialog {
             }
         });
 
-        jTextFieldUsuário.setDocument( new ControleTamanhoTexto(50) );
+        jTextFieldUsuário.setDocument( new ControleTamanhoTexto(30) );
 
-        jTextFieldSenha.setDocument( new ControleTamanhoTexto(50) );
+        jTextFieldSenha.setDocument( new ControleTamanhoTexto(30) );
         jTextFieldSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldSenhaActionPerformed(evt);
@@ -117,7 +127,7 @@ public class Novo extends javax.swing.JDialog {
         jPanelTextos.setLayout(jPanelTextosLayout);
         jPanelTextosLayout.setHorizontalGroup(
             jPanelTextosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextFieldSenha)
+            .addComponent(jTextFieldSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
             .addComponent(jTextFieldUsuário)
             .addComponent(jTextFieldNome, javax.swing.GroupLayout.Alignment.TRAILING)
         );
@@ -161,12 +171,12 @@ public class Novo extends javax.swing.JDialog {
         jPanelBotõesLayout.setHorizontalGroup(
             jPanelBotõesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBotõesLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 26, Short.MAX_VALUE)
                 .addComponent(jCheckBoxMúltiplasSenhas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonCancelar)
+                .addComponent(jButtonOkay)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonOkay))
+                .addComponent(jButtonCancelar))
         );
         jPanelBotõesLayout.setVerticalGroup(
             jPanelBotõesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,7 +200,7 @@ public class Novo extends javax.swing.JDialog {
                 .addGroup(jPanelEtiquetasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanelTextos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanelEtiquetasLayout.createSequentialGroup()
-                        .addGap(0, 95, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanelBotões, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         jPanelEtiquetasLayout.setVerticalGroup(
@@ -231,7 +241,7 @@ public class Novo extends javax.swing.JDialog {
     private void jButtonOkayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOkayActionPerformed
         try {
             // TODO add your handling code here:
-            //Verifica se uma ou mais senha e chama a janela de inserção de dados
+            //Chama a janela de inserção de dados
             botãoOkayPressionado();
         } catch (Exception ex) {
             Logger.getLogger(Novo.class.getName()).log(Level.SEVERE, null, ex);
@@ -278,9 +288,14 @@ public class Novo extends javax.swing.JDialog {
     
     //Checa se foi selecionada a opção para inserir mais de um cadastro de senha, e chama a janela de cadastro
     private void botãoOkayPressionado() throws Exception{
+        int flag;
+        //Se a caixa de cadastro de múltiplassenhas estiver desmarcada, termina a execução e encerra
         if(!jCheckBoxMúltiplasSenhas.isSelected()){
-            inserirSenha();
-            this.dispose();
+            flag = inserirSenha();
+            //Caso nenhum erro tenha ocorrido, encerra a janela
+            if (flag==0) {
+                this.dispose();
+            }
         }else{
             // Seta o foco no primeiro campo de texto(nome)
             jTextFieldNome.requestFocus();
@@ -289,37 +304,31 @@ public class Novo extends javax.swing.JDialog {
     }
     
     //Capta os dados da tela de cadastro e insere no banco de dados
-    private void inserirSenha() throws Exception {
+    private int inserirSenha() throws Exception {
         String mensagem_erro = null;
-        //recebe os dados digitados pelo usuário na tela de cadastro
+        //Recebe os dados digitados pelo usuário na tela de cadastro
         Senha senha = obterSenhaInformada();
         
         //Insere a senha no banco de dados
         if (senha != null){
+            senha.setIdUser(userLogado.getID());
             mensagem_erro = Senha.inserirSenha(senha);
             //Para caso o usuário for continuar cadastrando ele irá limpar os campos após a confirmação de inserção de cada cadastro
             Limpar();
+            return 0;
         }
         else{
             JOptionPane.showMessageDialog(this, "Por gentileza preencher todos os campos", "ERRO",
-                    JOptionPane.WARNING_MESSAGE);
-                    //JOptionPane.ERROR_MESSAGE);
-            int flag = 0;
-            flag = JOptionPane.showConfirmDialog(this,"Você deve informar todos os campos",
-                    "Campos não informados",JOptionPane.YES_NO_OPTION);
-            if(flag==JOptionPane.YES_OPTION){
-                System.out.println("opção sim foi marcada");
-            }
-            else{
-                System.out.println("opção não foi marcada");
-            }
+                    JOptionPane.ERROR_MESSAGE);
+            return 1;
         } 
     } 
     
     //Capta os dados digitados na tela de cadastro
     private Senha obterSenhaInformada() throws Exception{
         entidade.Senha senha = null;
-        String chaveencriptacao = "F5SENHAACESSO-TI";
+        //String chaveencriptacao = "F5SENHAACESSO-TI";
+        String chaveencriptacao = userLogado.getChave();
         
         String Nome =  jTextFieldNome.getText();
         if (Nome.isEmpty()) return null;
@@ -356,12 +365,7 @@ public class Novo extends javax.swing.JDialog {
         /*
         *      Criptografando senha usando AES
         */
-        //System.out.println("Senha: " + Senha);
         Senha = entidade.Senha.criptografe_e_codifique(Senha, chaveencriptacao);
-        //System.out.println("Senha encriptata e codificada: " + Senha);
-        //descriptografia com decodigicação de sennha 
-        //Senha = entidade.Senha.descriptografe_e_decodifique(Senha, chaveencriptacao);
-        //System.out.println("Senha decoficada e decriptada: " + Senha);
         
         //Retorna os dados informados pelo usuário
         return new Senha (Nome,Usuário, Senha);
@@ -405,7 +409,8 @@ public class Novo extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Novo dialog = new Novo(new javax.swing.JFrame(), true);
+                Usuário user = null;
+                Novo dialog = new Novo(new javax.swing.JFrame(), true, user);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
