@@ -53,7 +53,7 @@ public class Atalhos extends javax.swing.JFrame {
         jTextAreaAtalhos.setEditable(false);
         jTextAreaAtalhos.setColumns(20);
         jTextAreaAtalhos.setRows(5);
-        jTextAreaAtalhos.setText("Menus\n\nALT+D\tMenu Editar\nALT+O\tMenu Sobre\n\nOpções menu Editar\n\nN\tNovo\nV\tVisualizar\nA\tAtualizar\nE\tExcluir\nALT+S\tSair\nALT+F4\tSair\n\nOpções menu Sobre\n\nF1\tAtalhos\nB\tSobre\n\nOpções de Caixas de Diálogo\n\nALT+K\tOkay\nALT+C\tCancelar\nALT+P\tMúltiplas Senhas\nALT+U\tAtualizar");
+        jTextAreaAtalhos.setText("Menus\n\nALT+D\tMenu Editar\nALT+O\tMenu Sobre\nALT+u\tMenu Usuário(Usuário logado)\n\nOpções menu Editar\n\nN\tNovo\nV\tVisualizar\nA\tAtualizar\nE\tExcluir\nALT+S\tSair\nALT+F4\tSair\n\nOpções menu Sobre\n\nF1\tAtalhos\nB\tSobre\n\nOpções de Caixas de Diálogo\n\nALT+K\tOkay\nALT+C\tCancelar\nALT+P\tMúltiplas Senhas\nALT+U\tAtualizar");
         jScrollPaneAtalhos.setViewportView(jTextAreaAtalhos);
 
         jButtonOkay.setMnemonic('k');

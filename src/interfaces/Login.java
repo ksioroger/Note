@@ -7,10 +7,17 @@ import static entidade.Usuário.buscar_Usuário_e_PK;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 
 import java.net.URL;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -116,6 +123,7 @@ public class Login extends javax.swing.JFrame {
         );
 
         jButtonNovoUser.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButtonNovoUser.setMnemonic('N');
         jButtonNovoUser.setText("Novo Usúario");
         jButtonNovoUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,6 +132,7 @@ public class Login extends javax.swing.JFrame {
         });
 
         jButtonEntrar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButtonEntrar.setMnemonic('e');
         jButtonEntrar.setText("Entrar");
         jButtonEntrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -132,6 +141,7 @@ public class Login extends javax.swing.JFrame {
         });
 
         jButtonCancelar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButtonCancelar.setMnemonic('c');
         jButtonCancelar.setText("Cancelar");
         jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -267,6 +277,26 @@ public class Login extends javax.swing.JFrame {
         jPasswordFieldKey.requestFocus();
     }//GEN-LAST:event_jFormattedTextFieldUserActionPerformed
 
+    //Permitir fechar a Janela com a tecla Esc
+    @Override
+    protected JRootPane createRootPane() {
+        JRootPane rootPane = new JRootPane();
+        KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
+        Action actionListener;
+        actionListener = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) { 
+                //setVisible(false);
+                //Encerra o programa
+                System.exit(0);  
+            } 
+        };
+        InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(stroke, "ESCAPE");
+        rootPane.getActionMap().put("ESCAPE", actionListener);
+        return rootPane;
+    }
+    
     public Usuário capturaNomeSenha(){
         //Usuário dados = null;
         Usuário dados = new Usuário(null,null,null);

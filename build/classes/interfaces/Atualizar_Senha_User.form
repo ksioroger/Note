@@ -96,6 +96,7 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="jButtonCancelar">
               <Properties>
+                <Property name="mnemonic" type="int" value="99"/>
                 <Property name="text" type="java.lang.String" value="Cancelar"/>
               </Properties>
               <Events>
@@ -104,6 +105,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButtonAtualizar">
               <Properties>
+                <Property name="mnemonic" type="int" value="97"/>
                 <Property name="text" type="java.lang.String" value="Atualizar"/>
               </Properties>
               <Events>
@@ -245,8 +247,14 @@
                   </Events>
                 </Component>
                 <Component class="javax.swing.JPasswordField" name="jPasswordFieldSenha_Nova_Reentrada">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jPasswordFieldSenha_Nova_ReentradaActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JPasswordField" name="jPasswordFieldSenha_Nova">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jPasswordFieldSenha_NovaActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

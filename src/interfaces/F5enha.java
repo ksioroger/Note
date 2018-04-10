@@ -333,6 +333,7 @@ public class F5enha extends javax.swing.JFrame {
 
         jMenuMenuUsuário.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jMenuMenuUsuário.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user 20x20.png"))); // NOI18N
+        jMenuMenuUsuário.setMnemonic('u');
         jMenuMenuUsuário.setText(userLogado);
         jMenuMenuUsuário.setFocusable(false);
         jMenuMenuUsuário.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N

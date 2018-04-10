@@ -5,10 +5,17 @@ import controle.ControleTamanhoTexto;
 import static entidade.Usuário.inserirUsuario;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.net.URL;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -92,6 +99,11 @@ public class Cadastrar extends javax.swing.JDialog {
         );
 
         jFormattedTextFieldUser.setDocument( new ControleTamanhoTexto(30) );
+        jFormattedTextFieldUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextFieldUserActionPerformed(evt);
+            }
+        });
 
         jPasswordFieldKey.setDocument( new ControleTamanhoTexto(30) );
         jPasswordFieldKey.addActionListener(new java.awt.event.ActionListener() {
@@ -101,6 +113,11 @@ public class Cadastrar extends javax.swing.JDialog {
         });
 
         jPasswordFieldKey_Reentrada.setDocument( new ControleTamanhoTexto(30) );
+        jPasswordFieldKey_Reentrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswordFieldKey_ReentradaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelKeyLayout = new javax.swing.GroupLayout(jPanelKey);
         jPanelKey.setLayout(jPanelKeyLayout);
@@ -125,6 +142,7 @@ public class Cadastrar extends javax.swing.JDialog {
         );
 
         jButtonCancelar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButtonCancelar.setMnemonic('a');
         jButtonCancelar.setText("Cancelar");
         jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,6 +151,7 @@ public class Cadastrar extends javax.swing.JDialog {
         });
 
         jButtonCadastrar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButtonCadastrar.setMnemonic('c');
         jButtonCadastrar.setText("Cadastrar");
         jButtonCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -281,17 +300,40 @@ public class Cadastrar extends javax.swing.JDialog {
 
     private void jPasswordFieldKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldKeyActionPerformed
         // TODO add your handling code here:
-        //Quando estiver no campo de texto da senha permite confirmar usando a tecla enter
-        jPasswordFieldKey.addKeyListener(new KeyAdapter(){
-            @Override
-            public void keyPressed(KeyEvent ke){
-                if(ke.getKeyCode() == KeyEvent.VK_ENTER){
-                    jButtonCadastrar.doClick();
-                }
-            }
-        });
+        //Pula para o campo de senha
+        jPasswordFieldKey_Reentrada.requestFocus();
     }//GEN-LAST:event_jPasswordFieldKeyActionPerformed
 
+    private void jFormattedTextFieldUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldUserActionPerformed
+        // TODO add your handling code here:
+        //Pula para o campo de senha
+        jPasswordFieldKey.requestFocus();
+    }//GEN-LAST:event_jFormattedTextFieldUserActionPerformed
+
+    private void jPasswordFieldKey_ReentradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldKey_ReentradaActionPerformed
+        // TODO add your handling code here:
+        //Quando estiver no campo de reentrada da senha permite executar o botão cadastrar com o uso da tecla enter
+        jButtonCadastrar.doClick();
+    }//GEN-LAST:event_jPasswordFieldKey_ReentradaActionPerformed
+
+    //Permitir fechar a Janela com a tecla Esc
+    @Override
+    protected JRootPane createRootPane() {
+        JRootPane rootPane = new JRootPane();
+        KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
+        Action actionListener;
+        actionListener = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) { 
+                setVisible(false);
+            } 
+        };
+        InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(stroke, "ESCAPE");
+        rootPane.getActionMap().put("ESCAPE", actionListener);
+        return rootPane;
+    }
+    
     public Usuário prepararDadosparaArmazenar(Usuário dados){
         //Criptografa a senha escolhida em MD5
         dados.setsenha(entidade.EncriptaSenha_MD5.encripta(dados.getsenha()));

@@ -173,6 +173,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/images/user 20x20.png"/>
             </Property>
+            <Property name="mnemonic" type="int" value="117"/>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="userLogado" type="code"/>
             </Property>

@@ -207,6 +207,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="jButtonCancelar">
           <Properties>
+            <Property name="mnemonic" type="int" value="99"/>
             <Property name="text" type="java.lang.String" value="Cancelar"/>
           </Properties>
           <Events>
@@ -215,6 +216,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButtonExcluir">
           <Properties>
+            <Property name="mnemonic" type="int" value="101"/>
             <Property name="text" type="java.lang.String" value="Excluir Usu&#xe1;rio"/>
           </Properties>
           <Events>
@@ -223,6 +225,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButtonAtualizar">
           <Properties>
+            <Property name="mnemonic" type="int" value="97"/>
             <Property name="text" type="java.lang.String" value="Atualizar Senha"/>
           </Properties>
           <Events>
@@ -231,6 +234,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButtonNovo">
           <Properties>
+            <Property name="mnemonic" type="int" value="110"/>
             <Property name="text" type="java.lang.String" value="Novo Usu&#xe1;rio"/>
           </Properties>
           <Events>

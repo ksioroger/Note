@@ -105,8 +105,18 @@ public class Atualizar extends javax.swing.JDialog {
         );
 
         jTextFieldNome.setDocument( new ControleTamanhoTexto(30) );
+        jTextFieldNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldNomeActionPerformed(evt);
+            }
+        });
 
         jTextFieldUsuário.setDocument( new ControleTamanhoTexto(30) );
+        jTextFieldUsuário.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldUsuárioActionPerformed(evt);
+            }
+        });
 
         jTextFieldSenha.setDocument( new ControleTamanhoTexto(30) );
         jTextFieldSenha.addActionListener(new java.awt.event.ActionListener() {
@@ -237,13 +247,7 @@ public class Atualizar extends javax.swing.JDialog {
     private void jTextFieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSenhaActionPerformed
         // TODO add your handling code here:
         //Quando estiver no campo de texto da senha permite confirmar usando a tecla enter
-        jTextFieldSenha.addKeyListener(new KeyAdapter(){
-            public void keyPressed(KeyEvent ke){
-                if(ke.getKeyCode() == KeyEvent.VK_ENTER){
-                    jButtonAtualizar.doClick();
-                }
-            }
-        });
+        jButtonAtualizar.doClick();
     }//GEN-LAST:event_jTextFieldSenhaActionPerformed
 
     private void jButtonVer_SenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVer_SenhaActionPerformed
@@ -253,6 +257,18 @@ public class Atualizar extends javax.swing.JDialog {
         //Setar o botão Okay como botão padrão da janela
         getRootPane().setDefaultButton(jButtonAtualizar);
     }//GEN-LAST:event_jButtonVer_SenhaActionPerformed
+
+    private void jTextFieldNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNomeActionPerformed
+        // TODO add your handling code here:
+        //Pula para o campo de usuário
+        jTextFieldUsuário.requestFocus();
+    }//GEN-LAST:event_jTextFieldNomeActionPerformed
+
+    private void jTextFieldUsuárioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsuárioActionPerformed
+        // TODO add your handling code here:
+        //Pula para o campo de usuário
+        jTextFieldSenha.requestFocus();
+    }//GEN-LAST:event_jTextFieldUsuárioActionPerformed
 
     //Permitir fechar a Janela com a tecla Esc
     @Override

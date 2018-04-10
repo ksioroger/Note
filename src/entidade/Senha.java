@@ -547,6 +547,24 @@ public class Senha {
         return(senhadescriptadaedecodificada);
     }
     
+    //Remove o cadastro informado através de sua chave primária(id) do banco de dados
+    public static String removerSenha_User_Removido (int idUser) {
+        String sql = "DELETE FROM senhas WHERE iduser = ?";
+        BD.criaConexãoComando();
+        try {
+            PreparedStatement comando = BD.conexão.prepareStatement(sql);
+            comando.setString(1, Integer.toString(idUser));
+            comando.executeUpdate();
+            comando.close();
+            BD.fechaComandoConexão();
+            return null;
+        } catch (SQLException exceção_sql) {
+            exceção_sql.printStackTrace ();
+            BD.fechaComandoConexão();
+            return "Usuário removido com sucesso, mas apresentou falha na remoção das senhas do cofre do usuário";
+        }
+    }
+    
     @Override
     public String toString () {
         return nome + " - " + usuário;

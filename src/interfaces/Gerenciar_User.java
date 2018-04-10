@@ -1,14 +1,22 @@
 package interfaces;
 
+import static entidade.Senha.removerSenha_User_Removido;
 import entidade.Usuário;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 
 import java.net.URL;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -121,6 +129,7 @@ public class Gerenciar_User extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jButtonCancelar.setMnemonic('c');
         jButtonCancelar.setText("Cancelar");
         jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,6 +137,7 @@ public class Gerenciar_User extends javax.swing.JFrame {
             }
         });
 
+        jButtonExcluir.setMnemonic('e');
         jButtonExcluir.setText("Excluir Usuário");
         jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -135,6 +145,7 @@ public class Gerenciar_User extends javax.swing.JFrame {
             }
         });
 
+        jButtonAtualizar.setMnemonic('a');
         jButtonAtualizar.setText("Atualizar Senha");
         jButtonAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,6 +153,7 @@ public class Gerenciar_User extends javax.swing.JFrame {
             }
         });
 
+        jButtonNovo.setMnemonic('n');
         jButtonNovo.setText("Novo Usuário");
         jButtonNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -223,9 +235,16 @@ public class Gerenciar_User extends javax.swing.JFrame {
             mensagem = entidade.Usuário.removerSenha(usuário.getID());
             //Testa se a exclusão foi realizada com sucesso
             if(mensagem==null){
-                JOptionPane.showMessageDialog(this, "Excluido com sucesso, o sistema será encerrado!", "Atenção",JOptionPane.WARNING_MESSAGE);
-                //Encerra o programa
-                System.exit(0);
+                //Testa se a remoção das senhas do usuário excluido foi realizada com sucesso
+                mensagem = removerSenha_User_Removido(usuário.getID());
+                if(mensagem==null){
+                    JOptionPane.showMessageDialog(this, "Usuário e senhas excluidos com sucesso.\nO sistema será encerrado!", "Atenção",JOptionPane.WARNING_MESSAGE);
+                    //Encerra o programa
+                    System.exit(0);
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, mensagem, "Atenção",JOptionPane.ERROR_MESSAGE);
+                }
             }
             else{
                 JOptionPane.showMessageDialog(this, mensagem, "Atenção",JOptionPane.ERROR_MESSAGE);
@@ -241,6 +260,24 @@ public class Gerenciar_User extends javax.swing.JFrame {
         atualizar_Senha_Usuário_Dialogo.setVisible(true);
     }//GEN-LAST:event_jButtonAtualizarActionPerformed
 
+    //Permitir fechar a Janela com a tecla Esc
+    @Override
+    protected JRootPane createRootPane() {
+        JRootPane rootPane = new JRootPane();
+        KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
+        Action actionListener;
+        actionListener = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) { 
+                setVisible(false);
+            } 
+        };
+        InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(stroke, "ESCAPE");
+        rootPane.getActionMap().put("ESCAPE", actionListener);
+        return rootPane;
+    }
+    
     //Cria a janela de novo cadastro de senha
     private void Cadastrar(){
         //Criar uma nova janela, para adicionar dados

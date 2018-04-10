@@ -5,8 +5,15 @@ import static entidade.Usuário.alterarSenha;
 import static entidade.Usuário.buscar_Usuário_Todos_os_dados;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.net.URL;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -57,6 +64,7 @@ public class Atualizar_Senha_User extends javax.swing.JDialog {
 
         jPanelTela.setToolTipText("Atualizar Senha");
 
+        jButtonCancelar.setMnemonic('c');
         jButtonCancelar.setText("Cancelar");
         jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,6 +72,7 @@ public class Atualizar_Senha_User extends javax.swing.JDialog {
             }
         });
 
+        jButtonAtualizar.setMnemonic('a');
         jButtonAtualizar.setText("Atualizar");
         jButtonAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,6 +140,18 @@ public class Atualizar_Senha_User extends javax.swing.JDialog {
         jPasswordFieldSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordFieldSenhaActionPerformed(evt);
+            }
+        });
+
+        jPasswordFieldSenha_Nova_Reentrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswordFieldSenha_Nova_ReentradaActionPerformed(evt);
+            }
+        });
+
+        jPasswordFieldSenha_Nova.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswordFieldSenha_NovaActionPerformed(evt);
             }
         });
 
@@ -276,8 +297,40 @@ public class Atualizar_Senha_User extends javax.swing.JDialog {
 
     private void jPasswordFieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldSenhaActionPerformed
         // TODO add your handling code here:
+        //Pula para o campo de nova senha
+        jPasswordFieldSenha_Nova_Reentrada.requestFocus();
     }//GEN-LAST:event_jPasswordFieldSenhaActionPerformed
 
+    private void jPasswordFieldSenha_Nova_ReentradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldSenha_Nova_ReentradaActionPerformed
+        // TODO add your handling code here:
+        //Pula para o campo de nova senha
+        jPasswordFieldSenha_Nova.requestFocus();
+    }//GEN-LAST:event_jPasswordFieldSenha_Nova_ReentradaActionPerformed
+
+    private void jPasswordFieldSenha_NovaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldSenha_NovaActionPerformed
+        // TODO add your handling code here:
+        //Permite confirmar a atualização usando a tecla enter
+        jButtonAtualizar.doClick();
+    }//GEN-LAST:event_jPasswordFieldSenha_NovaActionPerformed
+
+    //Permitir fechar a Janela com a tecla Esc
+    @Override
+    protected JRootPane createRootPane() {
+        JRootPane rootPane = new JRootPane();
+        KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
+        Action actionListener;
+        actionListener = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) { 
+                setVisible(false);
+            } 
+        };
+        InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(stroke, "ESCAPE");
+        rootPane.getActionMap().put("ESCAPE", actionListener);
+        return rootPane;
+    }
+    
     /**
      * @param args the command line arguments
      */
