@@ -12,9 +12,14 @@ import java.sql.Statement;
 
 public class BD {
     //static final String URL_BD = "jdbc:mysql://localhost:3306/note?zeroDateTimeBehavior=convertToNull";
-    static final String URL_BD = "jdbc:mysql://localhost:3306/note?autoReconnect=true&useSSL=false";
+    /*static final String URL_BD = "jdbc:mysql://localhost:3306/note?autoReconnect=true&useSSL=false";
     static final String USUÁRIO = "note";
     static final String SENHA = "note";
+    */
+    static final String URL_BD = "jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10231939?autoReconnect=true&useSSL=false";
+    static final String USUÁRIO = "sql10231939";
+    static final String SENHA = "Us5sQyQUaT";
+    
     public static Connection conexão = null;
     private static Statement comando = null;
 
