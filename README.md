@@ -21,6 +21,6 @@ Ao realizar o cadastro no sistema a senha mestre de acesso ao gerenciado de senh
 
 Caso deseje apenas executar o software sem a necessidade de configurações ou adicionais visite o link [Executar](https://github.com/ksioroger/Note/wiki#executar).
 
-Execução com banco em nuvem, modo [online](https://github.com/ksioroger/Note/wiki#executar-com-banco-de-dados-on-line), execução com banco local(localhost), modo RECOMENDADO ou em máquina na rede, modo [offline](https://github.com/ksioroger/Note/wiki#executar-offlinelocalhost-ou-banco-de-dados-na-mesma-rede);
+Execução com banco em nuvem, modo [online](https://github.com/ksioroger/Note/wiki#executar-com-banco-de-dados-on-line)(modo RECOMENDADO), execução com banco local(localhost), ou em máquina na rede, modo [offline](https://github.com/ksioroger/Note/wiki#executar-offlinelocalhost-ou-banco-de-dados-na-mesma-rede);
 
 Caso deseje informações mais detalhadas e personalizações de banco acesse, a [WIKI](https://github.com/ksioroger/Note/wiki) para mais informações.
